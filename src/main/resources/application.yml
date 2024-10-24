@@ -1,0 +1,34 @@
+spring:
+  datasource:
+    password: 123
+    url: jdbc:sqlserver://localhost:1433;database=InternShipManagement;trustServerCertificate=true
+    username: sa
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.SQLServerDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    show-sql: true
+
+mail:
+  host: smtp.gmail.com
+  username: quyenntt0804@gmail.com
+  password: ${mail-password}
+  from: quyenntt0804@gmail.com
+  port: 587
+  properties:
+    mail:
+      transport:
+        protocol: smtp
+      smtp:
+        auth: true
+        starttls:
+          enable: true
+        connectiontimeout: 5000
+        timeout: 5000
+        writetimeout: 5000
