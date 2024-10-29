@@ -13,6 +13,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,12 +22,13 @@ import java.util.Optional;
 public class InternService {
     private final InternRepository internRepository;
     private final InternMapper internMapper;
-    private final PasswordEncoder passwordEncoder;
+//    private final PasswordEncoder passwordEncoder;
     private final AuthService authService;
 
     public InternEntity addIntern(InternCreationRequest request) {
         InternEntity intern = new InternEntity();
-        intern.setUserId(request.getId());
+        String[] i = request.getAccount().split("@");
+        intern.setUserId(i[0].toUpperCase());
         intern.setAccount(request.getAccount());
         intern.setFullName(request.getFullName());
         intern.setPassword(authService.passwordHash(request.getPassword()));

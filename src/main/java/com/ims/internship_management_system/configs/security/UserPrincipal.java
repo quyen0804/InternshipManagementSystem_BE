@@ -2,7 +2,7 @@ package com.ims.internship_management_system.configs.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 //import com.myblogbackend.blog.models.UserEntity;
-import com.ims.internship_management_system.model.User;
+import com.ims.internship_management_system.model.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -29,7 +29,7 @@ public class UserPrincipal implements UserDetails {
         this.password = password;
     }
 
-    public static UserPrincipal build(final User userEntity) {
+    public static UserPrincipal build(final UserEntity userEntity) {
         return new UserPrincipal(
                 userEntity.getUserId(),
                 userEntity.getAccount(),

@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InternCreationRequest {
-    private String id;
+//    private String id;
     private String account;
     private String password;
     private String fullName;

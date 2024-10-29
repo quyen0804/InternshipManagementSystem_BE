@@ -8,11 +8,12 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class UserEntity {
 
     @Id
     private String userId;

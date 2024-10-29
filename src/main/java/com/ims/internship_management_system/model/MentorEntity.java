@@ -2,20 +2,23 @@ package com.ims.internship_management_system.model;
 
 import com.ims.internship_management_system.constant.Role;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Data
 @Table
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class MentorEntity extends User{
+//@EqualsAndHashCode(callSuper = true)
+@EntityListeners(AuditingEntityListener.class)
+@PrimaryKeyJoinColumn(name = "userId")
+public class MentorEntity extends UserEntity {
     private String bu;
 
     public MentorEntity(String userId, String account,
