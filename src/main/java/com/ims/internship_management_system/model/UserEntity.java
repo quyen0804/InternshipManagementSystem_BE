@@ -27,7 +27,7 @@ public class UserEntity {
     private boolean gender;
     private LocalDate dob;
     private String address;
-    private String cccd;
+    private String socialNum;
 
     @Enumerated(EnumType.ORDINAL)
     private Role role;

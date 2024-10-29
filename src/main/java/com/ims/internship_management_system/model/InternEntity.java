@@ -29,12 +29,11 @@ public class InternEntity extends UserEntity {
     @Column(updatable = false)
     private LocalDate joinDate;
 
-
     public InternEntity(String user_id, String account, String password,
                         String fullName, String phone, boolean gender,
-                        LocalDate dob, String address, String cccd, Role role,
+                        LocalDate dob, String address, String socialNum, Role role,
                         String avatar, InternStatus status, String mentorId, LocalDate joinDate) {
-        super(user_id,account,password,fullName,phone,gender,dob,address,cccd,role);
+        super(user_id,account,password,fullName,phone,gender,dob,address,socialNum,role);
         this.avatar = avatar;
         this.status = status;
         this.mentorId = mentorId;

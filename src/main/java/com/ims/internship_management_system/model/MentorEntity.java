@@ -24,8 +24,8 @@ public class MentorEntity extends UserEntity {
     public MentorEntity(String userId, String account,
                         String password, String fullName, String phone,
                         boolean gender,
-                        LocalDate dob, String address, String cccd, Role role, String bu) {
-        super(userId,account,password,fullName,phone,gender,dob,address,cccd,role);
+                        LocalDate dob, String address, String socialNum, Role role, String bu) {
+        super(userId,account,password,fullName,phone,gender,dob,address,socialNum,role);
         this.bu=bu;
     }
 

@@ -20,7 +20,7 @@ public class InternCreationRequest {
     private boolean gender;
     private LocalDate dob;
     private String address;
-    private String cccd;
+    private String socialNum;
     private String avatar;
     private String mentorAccount;
 }

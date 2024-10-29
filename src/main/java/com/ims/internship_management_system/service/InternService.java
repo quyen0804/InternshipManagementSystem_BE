@@ -38,7 +38,9 @@ public class InternService {
         intern.setAddress(request.getAddress());
         intern.setRole(Role.INTERN);
         intern.setStatus(InternStatus.ACTIVE);
+//        intern.set
         intern.setAvatar(request.getAvatar());
+
         return internRepository.save(intern);
     }
 
