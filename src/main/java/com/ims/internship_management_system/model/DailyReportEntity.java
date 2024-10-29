@@ -46,6 +46,6 @@ public class DailyReportEntity {
     @UpdateTimestamp
     private Timestamp updatedTime;
 
-    private List<TaskEntity> tasks;
-    private List<IssueEntity> issues;
+//    private List<TaskEntity> tasks;
+//    private List<IssueEntity> issues;
 }

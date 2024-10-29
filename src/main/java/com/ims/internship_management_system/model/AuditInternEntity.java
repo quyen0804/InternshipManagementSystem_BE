@@ -26,6 +26,6 @@ public class AuditInternEntity {
     @UpdateTimestamp
     private Timestamp updatedTime;
 
-    private int gradeId;
+//    private int gradeId;
     private double aveGrade;
 }

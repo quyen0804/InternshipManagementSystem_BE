@@ -19,5 +19,4 @@ public class IssueEntity {
     private int reportId;
     private String issueContent;
 
-    private List<ReceiverEntity> receivers;
 }

@@ -1,14 +1,19 @@
 package com.ims.internship_management_system.model;
 
+import com.ims.internship_management_system.constant.InternStatus;
 import com.ims.internship_management_system.constant.Role;
-import com.ims.internship_management_system.constant.Status;
+import com.ims.internship_management_system.constant.InternStatus;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -19,18 +24,22 @@ public class InternEntity extends User {
 
 
     private String avatar;
-    private Status status;
-    private String mentor_id;
+    private InternStatus status;
+    private String mentorId;
 
-    public InternEntity(String user_id, String account,
-                        String password, String fullName, String phone,
-                        boolean gender,
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime joinDate;
+
+    public InternEntity(String user_id, String account, String password,
+                        String fullName, String phone, boolean gender,
                         LocalDate dob, String address, String cccd, Role role,
-                        String avatar, Status status, String mentor_id) {
+                        String avatar, InternStatus status, String mentorId, LocalDateTime joinDate) {
         super(user_id,account,password,fullName,phone,gender,dob,address,cccd,role);
         this.avatar = avatar;
         this.status = status;
-        this.mentor_id = mentor_id;
+        this.mentorId = mentorId;
+        this.joinDate = joinDate;
     }
 
 

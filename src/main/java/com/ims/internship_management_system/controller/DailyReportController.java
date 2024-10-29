@@ -19,7 +19,7 @@ public class DailyReportController {
     private final DailyReportService dailyReportService;
 
     @GetMapping(path = "/get")
-    public ResponseEntity<?> findDailyReportByInternId(@RequestParam int id) {
+    public ResponseEntity<?> findDailyReportByInternId(@RequestParam String id) {
         List<DailyReportDto> list = dailyReportService.findAllByInternId(id);
         return ResponseEntity.ok().body(list);
     }

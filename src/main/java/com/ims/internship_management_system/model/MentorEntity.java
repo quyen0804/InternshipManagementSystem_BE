@@ -26,5 +26,5 @@ public class MentorEntity extends User{
         this.bu=bu;
     }
 
-    private List<InternEntity> interns;
+//    private List<InternEntity> interns;
 }

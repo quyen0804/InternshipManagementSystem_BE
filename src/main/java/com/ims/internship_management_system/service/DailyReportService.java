@@ -20,7 +20,7 @@ public class DailyReportService {
     @Autowired
     private final DailyReportMapper dailyReportMapper;
 
-    public List<DailyReportDto> findAllByInternId(int id) {
+    public List<DailyReportDto> findAllByInternId(String id) {
         try {
             var drs= dailyReportRepository.findDailyReportEntitiesByInternId(id);
 //            return dailyReportMapper.toDTO(dr);
