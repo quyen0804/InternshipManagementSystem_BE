@@ -27,8 +27,9 @@ public class InternService {
 
     public InternEntity addIntern(InternCreationRequest request) {
         InternEntity intern = new InternEntity();
-        String[] i = request.getAccount().split("@");
-        intern.setUserId(i[0].toUpperCase());
+
+
+        intern.setUserId(getIdFromAccount(request.getAccount()));
         intern.setAccount(request.getAccount());
         intern.setFullName(request.getFullName());
         intern.setPassword(authService.passwordHash(request.getPassword()));
@@ -38,7 +39,8 @@ public class InternService {
         intern.setAddress(request.getAddress());
         intern.setRole(Role.INTERN);
         intern.setStatus(InternStatus.ACTIVE);
-//        intern.set
+        intern.setSocialNum(request.getSocialNum());
+        intern.setMentorId(getIdFromAccount(request.getMentorAccount()));
         intern.setAvatar(request.getAvatar());
 
         return internRepository.save(intern);
@@ -57,6 +59,12 @@ public class InternService {
     public void deleteInternByInternId(String id) {
         Optional<InternEntity> intern = internRepository.findInternEntityByUserId(id);
         intern.ifPresent(internRepository::delete);
+    }
+
+    public String getIdFromAccount(String account) {
+        String[] i = account.split("@");
+        return i[0];
+//        return i[0].toUpperCase();
     }
 
 //    public Optional<InternDto> searchInternEntitiesByInput(@Param("input") String input){

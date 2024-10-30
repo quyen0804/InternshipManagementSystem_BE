@@ -26,5 +26,5 @@ public class InternDto {
     private Role role;
     private String avatar;
     private InternStatus status;
-    private String mentorName;
+    private String mentorId;
 }
