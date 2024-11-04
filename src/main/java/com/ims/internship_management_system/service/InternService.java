@@ -52,8 +52,28 @@ public class InternService {
                 .toList();
     }
 
+    public InternEntity save(InternEntity intern){
+        return internRepository.save(intern);
+    }
+
     public Optional<InternDto> getInternByInternId(String id) {
         return internRepository.findInternEntityByUserId(id).map(internMapper::toDTO);
+    }
+
+    public Optional<InternEntity> updateInternByInternId(String id, InternCreationRequest request) {
+        Optional<InternEntity> exist = getInternByInternId(id).map(internMapper::toEntity);
+        exist.ifPresent(intern -> {
+        intern.setPhone(request.getPhone());
+        intern.setDob(request.getDob());
+        intern.setGender(request.isGender());
+        intern.setAddress(request.getAddress());
+        } );
+        return exist;
+    }
+
+
+    public boolean checkExist(String id) {
+        return internRepository.findInternEntityByUserId(id).isPresent();
     }
 
     public void deleteInternByInternId(String id) {

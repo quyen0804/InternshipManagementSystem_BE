@@ -33,6 +33,13 @@ public class InternController {
     Optional<InternDto> findInternById(@PathVariable String id) {
         return internService.getInternByInternId(id);
     }
+
+    @PutMapping(path = "/edit-profile/{id}")
+    public ResponseEntity<?> updatePassenger(@PathVariable String id, @RequestBody InternCreationRequest request) {
+        Optional<InternEntity> updated = internService.updateInternByInternId(id, request);
+        return updated.map(intern -> new ResponseEntity<>(intern, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
     
 //    @GetMapping(path = "/search")
 //    Optional<InternDto> findInternByInput(@RequestParam String input) {

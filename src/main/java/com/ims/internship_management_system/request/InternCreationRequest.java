@@ -16,10 +16,10 @@ public class InternCreationRequest {
     private String account;
     private String password;
     private String fullName;
-    private String phone;
-    private boolean gender;
-    private LocalDate dob;
-    private String address;
+    private String phone; //*
+    private boolean gender; //*
+    private LocalDate dob; //*
+    private String address; //*
     private String socialNum;
     private String avatar;
     private String mentorAccount;
