@@ -1,5 +1,6 @@
 package com.ims.internship_management_system.service.security;
 
+import com.ims.internship_management_system.constant.LetterAndNumber;
 import com.ims.internship_management_system.exception.IMSRuntimeException;
 import com.ims.internship_management_system.model.dto.JwtResponse;
 import com.ims.internship_management_system.model.dto.LoginRequest;
@@ -9,17 +10,36 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final InternRepository internRepository;
     private final JwtService jwtService;
-
+    private static final SecureRandom random = new SecureRandom();
+    public static final String PASSWORD_BASE = LetterAndNumber.LOWERCASE_LETTER.getValue()
+            + LetterAndNumber.UPPERCASE_LETTER.getValue()
+            + LetterAndNumber.NUMBER.getValue()
+            + LetterAndNumber.SPECIAL_CHAR.getValue();
 
     public boolean checkPassword(String rawPassword, String storedHashedPassword) {
         return passwordEncoder.matches(rawPassword, storedHashedPassword);
     }
+
+    public String generatePassword(int length) {
+        if (length < 1) throw new IllegalArgumentException("Password length must be greater than zero.");
+
+        StringBuilder password = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(PASSWORD_BASE.length());
+            password.append(PASSWORD_BASE.charAt(randomIndex));
+        }
+        return new String(password);
+    }
+
+
 
     public String passwordHash(String rawPassword) {
         return passwordEncoder.encode(rawPassword);

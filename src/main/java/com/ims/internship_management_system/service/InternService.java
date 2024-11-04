@@ -9,11 +9,8 @@ import com.ims.internship_management_system.repository.InternRepository;
 import com.ims.internship_management_system.request.InternCreationRequest;
 import com.ims.internship_management_system.service.security.AuthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,16 +29,17 @@ public class InternService {
         intern.setUserId(getIdFromAccount(request.getAccount()));
         intern.setAccount(request.getAccount());
         intern.setFullName(request.getFullName());
-        intern.setPassword(authService.passwordHash(request.getPassword()));
-        intern.setDob(request.getDob());
-        intern.setPhone(request.getPhone());
-        intern.setGender(request.isGender());
-        intern.setAddress(request.getAddress());
+//        intern.setPassword(authService.passwordHash(authService.generatePassword(8)));
+        intern.setPassword(authService.generatePassword(8));
+//        intern.setDob(request.getDob());
+//        intern.setPhone(request.getPhone());
+//        intern.setGender(request.isGender());
+//        intern.setAddress(request.getAddress());
         intern.setRole(Role.INTERN);
         intern.setStatus(InternStatus.ACTIVE);
         intern.setSocialNum(request.getSocialNum());
         intern.setMentorId(getIdFromAccount(request.getMentorAccount()));
-        intern.setAvatar(request.getAvatar());
+//        intern.setAvatar(request.getAvatar());
 
         return internRepository.save(intern);
     }
@@ -52,16 +50,20 @@ public class InternService {
                 .toList();
     }
 
+    public Optional<InternEntity> getInternByInternId(String id) {
+        return internRepository.findInternEntityByUserId(id);
+    }
+
     public InternEntity save(InternEntity intern){
         return internRepository.save(intern);
     }
 
-    public Optional<InternDto> getInternByInternId(String id) {
+    public Optional<InternDto> getInternDtoByInternId(String id) {
         return internRepository.findInternEntityByUserId(id).map(internMapper::toDTO);
     }
 
-    public Optional<InternEntity> updateInternByInternId(String id, InternCreationRequest request) {
-        Optional<InternEntity> exist = getInternByInternId(id).map(internMapper::toEntity);
+    public Optional<InternEntity> updateInternByInternId(String id, InternDto request) {
+        Optional<InternEntity> exist = getInternDtoByInternId(id).map(internMapper::toEntity);
         exist.ifPresent(intern -> {
         intern.setPhone(request.getPhone());
         intern.setDob(request.getDob());

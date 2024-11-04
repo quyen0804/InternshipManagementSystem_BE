@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuditInternDto {
-//    private String internFullname;
+    private String internFullname;
 
     @CreationTimestamp
     private Timestamp createdTime;

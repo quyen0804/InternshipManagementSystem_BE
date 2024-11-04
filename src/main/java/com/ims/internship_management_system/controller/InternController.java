@@ -3,7 +3,6 @@ package com.ims.internship_management_system.controller;
 import com.ims.internship_management_system.model.InternEntity;
 import com.ims.internship_management_system.model.dto.InternDto;
 import com.ims.internship_management_system.model.mapper.InternMapper;
-import com.ims.internship_management_system.repository.InternRepository;
 import com.ims.internship_management_system.request.InternCreationRequest;
 import com.ims.internship_management_system.service.InternService;
 import lombok.RequiredArgsConstructor;
@@ -31,11 +30,11 @@ public class InternController {
     
     @GetMapping(path="/profile/{id}")
     Optional<InternDto> findInternById(@PathVariable String id) {
-        return internService.getInternByInternId(id);
+        return internService.getInternDtoByInternId(id);
     }
 
     @PutMapping(path = "/edit-profile/{id}")
-    public ResponseEntity<?> updatePassenger(@PathVariable String id, @RequestBody InternCreationRequest request) {
+    public ResponseEntity<?> updatePassenger(@PathVariable String id, @RequestBody InternDto request) {
         Optional<InternEntity> updated = internService.updateInternByInternId(id, request);
         return updated.map(intern -> new ResponseEntity<>(intern, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -48,7 +47,7 @@ public class InternController {
 
     @DeleteMapping(path = "/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable String id) {
-        if (internService.getInternByInternId(id).isPresent()) {
+        if (internService.getInternDtoByInternId(id).isPresent()) {
             internService.deleteInternByInternId(id);
             return new ResponseEntity<>("Intern deleted!", HttpStatus.OK);
         }
