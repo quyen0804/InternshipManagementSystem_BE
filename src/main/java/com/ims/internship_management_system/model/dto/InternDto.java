@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class InternDto {
-//    String user_id;
+    private String userId;
     private String account;
 //    private String password;
     private String fullName;

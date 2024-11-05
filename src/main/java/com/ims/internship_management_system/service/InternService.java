@@ -3,6 +3,7 @@ package com.ims.internship_management_system.service;
 import com.ims.internship_management_system.constant.InternStatus;
 import com.ims.internship_management_system.constant.Role;
 import com.ims.internship_management_system.model.InternEntity;
+import com.ims.internship_management_system.model.MentorEntity;
 import com.ims.internship_management_system.model.dto.InternDto;
 import com.ims.internship_management_system.model.mapper.InternMapper;
 import com.ims.internship_management_system.repository.InternRepository;
@@ -21,6 +22,7 @@ public class InternService {
     private final InternMapper internMapper;
 //    private final PasswordEncoder passwordEncoder;
     private final AuthService authService;
+    private final MentorService mentorService;
 
     public InternEntity addIntern(InternCreationRequest request) {
         InternEntity intern = new InternEntity();
@@ -48,6 +50,10 @@ public class InternService {
         return internRepository.findAll().stream()
                 .map(internMapper::toDTO)
                 .toList();
+    }
+
+    public List<InternEntity> getAllInternEntities() {
+        return internRepository.findAll();
     }
 
     public Optional<InternEntity> getInternByInternId(String id) {
@@ -87,6 +93,30 @@ public class InternService {
         String[] i = account.split("@");
         return i[0];
 //        return i[0].toUpperCase();
+    }
+
+    public List<InternEntity> findAllActiveInterns() {
+        List<InternEntity> all = getAllInternEntities();
+        List<InternEntity> intern = null;
+        for (InternEntity internEntity : all) {
+            if (internEntity.getStatus().equals(InternStatus.ACTIVE)) {
+                intern.add(internEntity);
+            }
+        }
+        return intern;
+    }
+
+    public InternEntity findAllInternByMentorId(String mentorId) {
+        return internRepository.findInternEntityByMentorId(mentorId).orElse(null);
+    }
+
+    public List<InternEntity> findAllInternByMentorBu(String bu){
+        List<MentorEntity> mentors = mentorService.findAllMentorByBu(bu);
+        List<InternEntity> intern = null;
+        for(MentorEntity mentor: mentors){
+            intern.add(findAllInternByMentorId(mentor.getUserId()));
+        }
+        return null;
     }
 
 //    public Optional<InternDto> searchInternEntitiesByInput(@Param("input") String input){
