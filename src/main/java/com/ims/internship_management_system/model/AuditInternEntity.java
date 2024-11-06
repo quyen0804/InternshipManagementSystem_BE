@@ -35,4 +35,6 @@ public class AuditInternEntity {
 
 //    private int gradeId;
     private double aveGrade;
+
+//    public AuditInternEntity()
 }

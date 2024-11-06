@@ -14,16 +14,16 @@ import org.springframework.stereotype.Service;
 public class AuditResultService {
     private final AuditResultRepository auditResultRepository;
 
-    @Scheduled(cron="0 0 8 ? * MON#1")
-    public AuditResultEntity createAuditResult(AuditResultDto auditResultDto) {
-        AuditResultEntity auditResultEntity = new AuditResultEntity();
-        auditResultEntity.setResultId(IdGenerator.generateAuditResultId(auditResultDto.getInternId()));
-        auditResultEntity.setAveResult(0);
-        auditResultEntity.setMentorId(auditResultDto.getMentorId());
-        auditResultEntity.setAveResult(0);
-        auditResultEntity.setResult(false);
-        auditResultRepository.save(auditResultEntity);
-        return auditResultEntity;
-    }
+//    @Scheduled(cron="0 0 8 ? * MON#1")
+//    public AuditResultEntity createAuditResult(AuditResultDto auditResultDto) {
+//        AuditResultEntity auditResultEntity = new AuditResultEntity();
+//        auditResultEntity.setResultId(IdGenerator.generateAuditResultId(auditResultDto.getInternId()));
+//        auditResultEntity.setAveResult(0);
+//        auditResultEntity.setMentorId(auditResultDto.getMentorId());
+//        auditResultEntity.setAveResult(0);
+//        auditResultEntity.setResult(false);
+//        auditResultRepository.save(auditResultEntity);
+//        return auditResultEntity;
+//    }
 
 }

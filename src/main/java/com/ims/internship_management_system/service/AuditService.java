@@ -23,7 +23,7 @@ public class AuditService {
     private final AuditRepository auditRepository;
     
 //    @Autowired
-    private final AuditMapper auditMapper;
+//    private final AuditMapper auditMapper;
     private final AuditInternService auditInternService;
 
     public AuditEntity createAudit(AuditFormCreationRequest request) {

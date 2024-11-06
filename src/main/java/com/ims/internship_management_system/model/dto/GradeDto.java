@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GradeDto {
-//    private int auditInternId;
+//    private String auditInternId;
     private GradeColumn name;
     private double value;
     private String description;
