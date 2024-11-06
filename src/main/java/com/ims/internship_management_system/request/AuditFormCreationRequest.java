@@ -10,6 +10,9 @@ import java.util.List;
 @Getter
 @Setter
 public class AuditFormCreationRequest {
+    private String mentorId;
     private int evaluationPeriod;
     private List<InternEntity> interns;
+
+
 }

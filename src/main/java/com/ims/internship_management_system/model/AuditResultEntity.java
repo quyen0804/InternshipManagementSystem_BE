@@ -1,25 +1,27 @@
 package com.ims.internship_management_system.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 
 @Entity
 @Table
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuditResultEntity {
     @Id
-    @Column
-    private int resultId;
+    private String resultId;
 
-    private int auditInternId;
+    private String internId;
+    private String mentorId;
+//    private int auditInternId;
     private double aveResult;
     private boolean result;
 

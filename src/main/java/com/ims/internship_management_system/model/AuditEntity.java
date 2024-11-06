@@ -11,6 +11,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,11 +21,14 @@ import java.util.Date;
 public class AuditEntity {
 
     @Id
-    private int auditId;
+    private String auditId;
+
+    private String mentorId;
 
     @CreatedDate
     private Date date;
 
     private EvaluationPeriod evaluationPeriod;
-    private int resultId;
+
+//    private String resultId;
 }

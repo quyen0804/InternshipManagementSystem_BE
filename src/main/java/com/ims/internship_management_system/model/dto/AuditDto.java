@@ -2,6 +2,7 @@ package com.ims.internship_management_system.model.dto;
 
 
 import com.ims.internship_management_system.constant.EvaluationPeriod;
+import com.ims.internship_management_system.model.AuditInternEntity;
 import com.ims.internship_management_system.model.InternEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,4 +25,6 @@ public class AuditDto {
     private EvaluationPeriod evaluationPeriod;
 //    private int resultId;
     private List<InternEntity> interns;
+    private List<AuditInternEntity> auditInterns;
+
 }

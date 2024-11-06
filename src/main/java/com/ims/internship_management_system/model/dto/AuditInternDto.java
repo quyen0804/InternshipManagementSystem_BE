@@ -15,7 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuditInternDto {
-    private String internFullname;
+    private String internId;
+    private String mentorId;
 
     @CreationTimestamp
     private Timestamp createdTime;
@@ -25,6 +26,7 @@ public class AuditInternDto {
 
 //    private int gradeId;
     private double aveGrade;
+
 
     private List<GradeDto> grades;
 }
