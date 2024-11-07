@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 //@EqualsAndHashCode(callSuper = true)
 @EntityListeners(AuditingEntityListener.class)
-@PrimaryKeyJoinColumn(name = "userId")
+@PrimaryKeyJoinColumn(name = "user_id")
 public class InternEntity extends UserEntity {
 //    @Id
 //    private String id;

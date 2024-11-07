@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 //@EqualsAndHashCode(callSuper = true)
 @EntityListeners(AuditingEntityListener.class)
-@PrimaryKeyJoinColumn(name = "userId")
+@PrimaryKeyJoinColumn(name = "user_id")
 public class MentorEntity extends UserEntity {
     private String bu;
 

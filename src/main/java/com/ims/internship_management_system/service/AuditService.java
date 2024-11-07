@@ -5,29 +5,23 @@ import com.ims.internship_management_system.constant.Role;
 import com.ims.internship_management_system.model.AuditEntity;
 import com.ims.internship_management_system.model.AuditParticipants;
 import com.ims.internship_management_system.model.InternEntity;
-import com.ims.internship_management_system.model.dto.AuditDto;
-import com.ims.internship_management_system.model.mapper.AuditMapper;
 import com.ims.internship_management_system.repository.AuditRepository;
 import com.ims.internship_management_system.request.AuditFormCreationRequest;
 import com.ims.internship_management_system.util.generator.IdGenerator;
 import lombok.RequiredArgsConstructor;
-//import lombok.var;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class AuditService {
-//    @Autowired
     private final AuditRepository auditRepository;
     
-//    @Autowired
-//    private final AuditMapper auditMapper;
     private final AuditInternService auditInternService;
 
     public AuditEntity createAudit(AuditFormCreationRequest request) {
-//        AuditEntity entity = new AuditEntity();
         AuditEntity audit = new AuditEntity();
         audit.setAuditId(IdGenerator.generateAuditId(request.getMentorId()));
         audit.setEvaluationPeriod(EvaluationPeriod.fromValue(request.getEvaluationPeriod()));
@@ -38,8 +32,18 @@ public class AuditService {
             auditInternService.createAuditIntern(audit.getAuditId(), intern.getUserId());
         }
 
-//        AuditEntity entity = auditMapper.toEntity(audit);
         return auditRepository.save(audit);
+    }
+
+    public Optional<AuditEntity> getAuditByMentorID(String id) {
+        return auditRepository.findByMentorId(id);
+    }
+
+    public Optional<AuditEntity> findAuditByMonth() {
+        LocalDate currentDate = LocalDate.now();
+        int currentMonth = currentDate.getMonthValue();
+        int currentYear = currentDate.getYear();
+        return auditRepository.findByMonthAndYear(currentMonth, currentYear);
     }
 
     public Optional<AuditEntity> getAuditById(String id) {
