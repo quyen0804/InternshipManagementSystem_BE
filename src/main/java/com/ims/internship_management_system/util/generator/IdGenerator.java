@@ -16,5 +16,9 @@ public class IdGenerator {
     public static String generateAuditId(String mentorId) {
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))+mentorId;
     }
+
+    public static String generateFeedbackId(String resultId) {
+        return resultId+"F";
+    }
 }
 

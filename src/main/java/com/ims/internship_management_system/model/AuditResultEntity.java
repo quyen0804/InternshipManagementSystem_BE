@@ -23,7 +23,7 @@ public class AuditResultEntity {
     private String mentorId;
 //    private int auditInternId;
     private double aveResult;
-    private boolean result;
+    private boolean isQualify;
 
     @CreationTimestamp
     private Timestamp createTime;

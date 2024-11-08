@@ -1,7 +1,9 @@
 package com.ims.internship_management_system.service.security;
 
+import com.ims.internship_management_system.constant.InternStatus;
 import com.ims.internship_management_system.constant.LetterAndNumber;
 import com.ims.internship_management_system.exception.IMSRuntimeException;
+import com.ims.internship_management_system.model.InternEntity;
 import com.ims.internship_management_system.model.dto.JwtResponse;
 import com.ims.internship_management_system.model.dto.LoginRequest;
 import com.ims.internship_management_system.repository.InternRepository;
@@ -11,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +42,9 @@ public class AuthService {
         return new String(password);
     }
 
-
+    public List<InternEntity> findAllActiveIntern(InternStatus status) {
+        return internRepository.findAllByStatus(InternStatus.ACTIVE);
+    }
 
     public String passwordHash(String rawPassword) {
         return passwordEncoder.encode(rawPassword);

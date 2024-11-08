@@ -17,7 +17,7 @@ public class AuditResultDto {
     private String internId;
     private String mentorId;
     private double aveResult;
-    private boolean result;
+    private boolean isQualify;
 
     @CreationTimestamp
     private Timestamp createTime;

@@ -1,5 +1,6 @@
 package com.ims.internship_management_system.repository;
 
+import com.ims.internship_management_system.constant.InternStatus;
 import com.ims.internship_management_system.model.InternEntity;
 import com.ims.internship_management_system.model.dto.InternDto;
 import jakarta.persistence.NamedNativeQuery;
@@ -14,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface InternRepository extends JpaRepository<InternEntity, Integer> {
     Optional<InternEntity> findInternEntityByMentorId(String id);
-
+    List<InternEntity> findAllByStatus(InternStatus internStatus);
 //    @Query
 //    Optional<InternEntity> searchInternEntitiesByInput(@Param("input") String input);
     Optional<InternEntity> findInternEntityByUserId(String internId);
