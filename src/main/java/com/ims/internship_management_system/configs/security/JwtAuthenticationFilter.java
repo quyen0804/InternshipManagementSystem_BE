@@ -1,8 +1,10 @@
 package com.ims.internship_management_system.configs.security;
 
+import com.ims.internship_management_system.constant.Auth;
 import com.ims.internship_management_system.service.security.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +36,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        jwt = authorizationHeader.substring(7);
+//        jwt = authorizationHeader.substring(7);
+        jwt = getCookie(request, Auth.JWT_COOKIE.getValue());
         userEmail = jwtService.extractUsername(jwt); //extract the email from JWT token
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
@@ -46,6 +49,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
-
+    public String getCookie(HttpServletRequest request, String name) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (name.equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
+    }
 }
 

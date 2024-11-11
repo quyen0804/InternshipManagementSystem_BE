@@ -1,11 +1,12 @@
 package com.ims.internship_management_system.service;
 
 
+import com.ims.internship_management_system.constant.InternStatus;
 import com.ims.internship_management_system.model.AuditInternEntity;
 import com.ims.internship_management_system.model.AuditResultEntity;
 import com.ims.internship_management_system.model.InternEntity;
 import com.ims.internship_management_system.model.dto.AuditInternDto;
-import com.ims.internship_management_system.model.dto.AuditResultDto;
+//import com.ims.internship_management_system.model.dto.AuditResultDto;
 import com.ims.internship_management_system.repository.AuditResultRepository;
 import com.ims.internship_management_system.repository.InternRepository;
 import com.ims.internship_management_system.util.generator.IdGenerator;
@@ -14,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AuditResultService {
@@ -25,12 +23,14 @@ public class AuditResultService {
     private final AuditResultRepository auditResultRepository;
     private final InternService internService;
     private final AuditInternService auditInternService;
+    private final InternRepository internRepository;
 
     @Autowired
-    public AuditResultService(AuditResultRepository auditResultRepository, InternService internService, AuditInternService auditInternService) {
+    public AuditResultService(AuditResultRepository auditResultRepository, InternService internService, AuditInternService auditInternService, InternRepository internRepository) {
         this.auditResultRepository = auditResultRepository;
         this.internService = internService;
         this.auditInternService = auditInternService;
+        this.internRepository = internRepository;
     }
 
     // Scheduled method must be no-arg
@@ -71,8 +71,25 @@ public class AuditResultService {
             auditResultEntity.setAveResult(totalSum/auditIntern.size());
             auditResultEntity.setQualify(auditResultEntity.getAveResult() >= 5 ? true : false);
 
+    // change status intern
         }
-    }
 
+
+        }
+
+        public InternEntity changeQualifyStatus(InternEntity intern){
+        int count = 0;
+        List<AuditResultEntity> results =
+                auditResultRepository.findAuditResultEntitiesByInternId(intern.getUserId());
+        for(AuditResultEntity auditResultEntity : results) {
+            if(auditResultEntity.isQualify()==false){
+                count++;
+            }
+        }
+        if(count>=2){
+            intern.setStatus(InternStatus.DISQUALIFIED);
+        }
+        return internRepository.save(intern);
+    }
 }
 

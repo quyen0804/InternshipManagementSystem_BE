@@ -7,5 +7,5 @@ import lombok.Data;
 public class LoginRequest {
     String username;
     String password;
-    Role role;
+//    Role role;
 }

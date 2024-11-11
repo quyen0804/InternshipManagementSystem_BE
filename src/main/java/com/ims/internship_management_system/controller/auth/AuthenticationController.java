@@ -1,13 +1,17 @@
 package com.ims.internship_management_system.controller.auth;
 
 
+import com.ims.internship_management_system.constant.Auth;
 import com.ims.internship_management_system.model.InternEntity;
 import com.ims.internship_management_system.model.dto.JwtResponse;
 import com.ims.internship_management_system.model.dto.LoginRequest;
 import com.ims.internship_management_system.request.InternCreationRequest;
 import com.ims.internship_management_system.service.InternService;
 import com.ims.internship_management_system.service.security.AuthService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,14 +39,16 @@ public class AuthenticationController {
                     "Intern ID: " + i.getUserId()
                             +"\nAccount: "+i.getAccount()
 //                            +"\nPassword: "+passwordEncoder.
-                            +"\nPassword: "+i.getPassword()
+                            +"\nPassword: "+i.getFirstPass()
                     , HttpStatus.OK))
                     .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
         }
 
     @PostMapping(path = "/login")
-    public ResponseEntity<?> internLogin(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> internLogin(@RequestBody LoginRequest request, HttpServletResponse response) {
         JwtResponse jwtResponse = authService.login(request);
+        Cookie cookie = new Cookie(Auth.JWT_COOKIE.getValue(), jwtResponse.getToken());
+        response.addCookie(cookie);
         return ResponseEntity.ok(jwtResponse);
     }
 

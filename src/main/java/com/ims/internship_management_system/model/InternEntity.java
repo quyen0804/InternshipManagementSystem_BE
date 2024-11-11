@@ -24,6 +24,7 @@ public class InternEntity extends UserEntity {
     private String avatar;
     private InternStatus status;
     private String mentorId;
+    private String firstPass;
 
     @CreatedDate
     @Column(updatable = false)

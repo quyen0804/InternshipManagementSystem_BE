@@ -10,6 +10,7 @@ import com.ims.internship_management_system.repository.InternRepository;
 import com.ims.internship_management_system.request.InternCreationRequest;
 import com.ims.internship_management_system.service.security.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class InternService {
 //    private final PasswordEncoder passwordEncoder;
     private final AuthService authService;
     private final MentorService mentorService;
+    private final PasswordEncoder passwordEncoder;
 
     public InternEntity addIntern(InternCreationRequest request) {
         InternEntity intern = new InternEntity();
@@ -32,16 +34,13 @@ public class InternService {
         intern.setAccount(request.getAccount());
         intern.setFullName(request.getFullName());
 //        intern.setPassword(authService.passwordHash(authService.generatePassword(8)));
-        intern.setPassword(authService.generatePassword(8));
-//        intern.setDob(request.getDob());
-//        intern.setPhone(request.getPhone());
-//        intern.setGender(request.isGender());
-//        intern.setAddress(request.getAddress());
+        String pass  = authService.generatePassword(8);
+        intern.setPassword(passwordEncoder.encode(pass));
+        intern.setFirstPass(pass);
         intern.setRole(Role.INTERN);
         intern.setStatus(InternStatus.ACTIVE);
         intern.setSocialNum(request.getSocialNum());
         intern.setMentorId(getIdFromAccount(request.getMentorAccount()));
-//        intern.setAvatar(request.getAvatar());
 
         return internRepository.save(intern);
     }
@@ -100,6 +99,29 @@ public class InternService {
         List<InternEntity> intern = null;
         for (InternEntity internEntity : all) {
             if (internEntity.getStatus().equals(InternStatus.ACTIVE)) {
+                intern.add(internEntity);
+            }
+        }
+        return intern;
+    }
+
+    public Optional<InternEntity> changeAccountStatus(String id, InternStatus status) {
+        Optional<InternEntity> intern = internRepository.findInternEntityByUserId(id);
+
+        intern.ifPresent(internEntity -> {
+            internEntity.setStatus(status);
+            internRepository.save(internEntity);
+        });
+
+        return intern;
+    }
+
+
+    public List<InternEntity> findAllNotActiveInterns() {
+        List<InternEntity> all = getAllInternEntities();
+        List<InternEntity> intern = null;
+        for (InternEntity internEntity : all) {
+            if (internEntity.getStatus().equals(InternStatus.INACTIVE)) {
                 intern.add(internEntity);
             }
         }
