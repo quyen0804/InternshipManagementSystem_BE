@@ -6,7 +6,6 @@ import com.ims.internship_management_system.model.AuditInternEntity;
 import com.ims.internship_management_system.model.AuditResultEntity;
 import com.ims.internship_management_system.model.InternEntity;
 import com.ims.internship_management_system.model.dto.AuditInternDto;
-//import com.ims.internship_management_system.model.dto.AuditResultDto;
 import com.ims.internship_management_system.repository.AuditResultRepository;
 import com.ims.internship_management_system.repository.InternRepository;
 import com.ims.internship_management_system.util.generator.IdGenerator;
@@ -91,5 +90,7 @@ public class AuditResultService {
         }
         return internRepository.save(intern);
     }
+
+
 }
 
