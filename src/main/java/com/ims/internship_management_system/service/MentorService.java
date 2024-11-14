@@ -61,7 +61,7 @@ public class MentorService {
 //        MentorEntity mentorEntity = mentorMapper.toEntity(mentorDto);
         String id = IdGenerator.getIdFromAccount(mentor.getAccount());
         if(mentorRepository.findByAccount(mentor.getAccount()).isPresent()) {
-            throw new IMSRuntimeException(HttpStatus.BAD_REQUEST, "This account already exists.");
+            throw new IMSRuntimeException(HttpStatus.I_AM_A_TEAPOT, "This account already exists.");
         }
         mentor.setUserId(id);
         mentor.setPassword(passwordEncoder.encode(mentor.getPassword()));

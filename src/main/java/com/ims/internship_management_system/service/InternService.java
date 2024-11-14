@@ -34,7 +34,7 @@ public class InternService {
         InternEntity intern = new InternEntity();
         String id = IdGenerator.getIdFromAccount(request.getAccount());
         if(internRepository.findInternEntityByUserId(id).isPresent()){
-            throw new IMSRuntimeException(HttpStatus.BAD_REQUEST,"This account existed.");
+            throw new IMSRuntimeException(HttpStatus.I_AM_A_TEAPOT,"This account existed.");
         }
         intern.setUserId(IdGenerator.getIdFromAccount(request.getAccount()));
         intern.setAccount(request.getAccount());
