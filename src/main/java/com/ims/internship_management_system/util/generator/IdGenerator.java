@@ -20,5 +20,11 @@ public class IdGenerator {
     public static String generateFeedbackId(String resultId) {
         return resultId+"F";
     }
+
+    public static String getIdFromAccount(String account) {
+        String[] i = account.split("@");
+        return i[0];
+//        return i[0].toUpperCase();
+    }
 }
 

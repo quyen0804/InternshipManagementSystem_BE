@@ -3,10 +3,13 @@ package com.ims.internship_management_system.controller.auth;
 
 import com.ims.internship_management_system.constant.Auth;
 import com.ims.internship_management_system.model.InternEntity;
+import com.ims.internship_management_system.model.MentorEntity;
 import com.ims.internship_management_system.model.dto.JwtResponse;
 import com.ims.internship_management_system.model.dto.LoginRequest;
+import com.ims.internship_management_system.model.dto.MentorDto;
 import com.ims.internship_management_system.request.InternCreationRequest;
 import com.ims.internship_management_system.service.InternService;
+import com.ims.internship_management_system.service.MentorService;
 import com.ims.internship_management_system.service.security.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,11 +28,17 @@ import java.util.Optional;
 public class AuthenticationController {
     private final InternService internService;
     private final AuthService authService;
+    private final MentorService mentorService;
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping(path = "/intern/register")
-    InternEntity internRegister(@RequestBody InternCreationRequest request) {
+    public InternEntity internRegister(@RequestBody InternCreationRequest request) {
         return internService.addIntern(request);
+    }
+
+    @PostMapping(path="mentor/register")
+    public MentorDto mentorRegister(@RequestBody MentorEntity mentor) {
+        return mentorService.createMentor(mentor);
     }
 
     @GetMapping(path="intern-login-info/{id}")

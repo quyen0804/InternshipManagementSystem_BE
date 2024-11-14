@@ -9,7 +9,9 @@ import com.ims.internship_management_system.model.mapper.InternMapper;
 import com.ims.internship_management_system.repository.InternRepository;
 import com.ims.internship_management_system.request.InternCreationRequest;
 import com.ims.internship_management_system.service.security.AuthService;
+import com.ims.internship_management_system.util.generator.IdGenerator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +32,7 @@ public class InternService {
         InternEntity intern = new InternEntity();
 
 
-        intern.setUserId(getIdFromAccount(request.getAccount()));
+        intern.setUserId(IdGenerator.getIdFromAccount(request.getAccount()));
         intern.setAccount(request.getAccount());
         intern.setFullName(request.getFullName());
 //        intern.setPassword(authService.passwordHash(authService.generatePassword(8)));
@@ -40,7 +42,7 @@ public class InternService {
         intern.setRole(Role.INTERN);
         intern.setStatus(InternStatus.ACTIVE);
         intern.setSocialNum(request.getSocialNum());
-        intern.setMentorId(getIdFromAccount(request.getMentorAccount()));
+        intern.setMentorId(IdGenerator.getIdFromAccount(request.getMentorAccount()));
 
         return internRepository.save(intern);
     }
@@ -88,11 +90,7 @@ public class InternService {
         intern.ifPresent(internRepository::delete);
     }
 
-    public String getIdFromAccount(String account) {
-        String[] i = account.split("@");
-        return i[0];
-//        return i[0].toUpperCase();
-    }
+
 
     public List<InternEntity> findAllActiveInterns() {
         List<InternEntity> all = getAllInternEntities();

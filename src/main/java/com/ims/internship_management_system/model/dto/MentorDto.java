@@ -24,4 +24,8 @@ public class MentorDto {
     private String socialNum;
     private Role role;
     private String bu;
+
+    public void setRole(Role role) {
+        this.role = Role.MENTOR;
+    }
 }

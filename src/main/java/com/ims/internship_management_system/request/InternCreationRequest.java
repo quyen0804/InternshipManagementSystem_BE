@@ -12,15 +12,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InternCreationRequest {
-//    private String id;
     private String account;
-//    private String password;
     private String fullName;
-//    private String phone; //*
-//    private boolean gender; //*
-//    private LocalDate dob; //*
-//    private String address; //*
     private String socialNum;
-//    private String avatar;
     private String mentorAccount;
 }
