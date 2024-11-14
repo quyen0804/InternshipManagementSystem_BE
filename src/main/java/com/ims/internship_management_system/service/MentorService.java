@@ -1,6 +1,7 @@
 package com.ims.internship_management_system.service;
 
 import com.ims.internship_management_system.constant.Role;
+import com.ims.internship_management_system.exception.IMSRuntimeException;
 import com.ims.internship_management_system.model.MentorEntity;
 import com.ims.internship_management_system.model.dto.MentorDto;
 import com.ims.internship_management_system.model.mapper.MentorMapper;
@@ -8,6 +9,7 @@ import com.ims.internship_management_system.repository.MentorRepository;
 import com.ims.internship_management_system.util.generator.IdGenerator;
 import lombok.RequiredArgsConstructor;
 //import lombok.var;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +59,11 @@ public class MentorService {
 
     public MentorDto createMentor(MentorEntity mentor) {
 //        MentorEntity mentorEntity = mentorMapper.toEntity(mentorDto);
-        mentor.setUserId(IdGenerator.getIdFromAccount(mentor.getAccount()));
+        String id = IdGenerator.getIdFromAccount(mentor.getAccount());
+        if(mentorRepository.findByAccount(mentor.getAccount()).isPresent()) {
+            throw new IMSRuntimeException(HttpStatus.BAD_REQUEST, "This account already exists.");
+        }
+        mentor.setUserId(id);
         mentor.setPassword(passwordEncoder.encode(mentor.getPassword()));
         mentor.setRole(Role.MENTOR);
         return mentorMapper.toDTO(mentorRepository.save(mentor));

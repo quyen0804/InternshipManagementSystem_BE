@@ -2,6 +2,7 @@ package com.ims.internship_management_system.service;
 
 import com.ims.internship_management_system.constant.InternStatus;
 import com.ims.internship_management_system.constant.Role;
+import com.ims.internship_management_system.exception.IMSRuntimeException;
 import com.ims.internship_management_system.model.InternEntity;
 import com.ims.internship_management_system.model.MentorEntity;
 import com.ims.internship_management_system.model.dto.InternDto;
@@ -12,6 +13,7 @@ import com.ims.internship_management_system.service.security.AuthService;
 import com.ims.internship_management_system.util.generator.IdGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,10 +32,13 @@ public class InternService {
 
     public InternEntity addIntern(InternCreationRequest request) {
         InternEntity intern = new InternEntity();
-
-
+        String id = IdGenerator.getIdFromAccount(request.getAccount());
+        if(internRepository.findInternEntityByUserId(id).isPresent()){
+            throw new IMSRuntimeException(HttpStatus.BAD_REQUEST,"This account existed.");
+        }
         intern.setUserId(IdGenerator.getIdFromAccount(request.getAccount()));
         intern.setAccount(request.getAccount());
+
         intern.setFullName(request.getFullName());
 //        intern.setPassword(authService.passwordHash(authService.generatePassword(8)));
         String pass  = authService.generatePassword(8);

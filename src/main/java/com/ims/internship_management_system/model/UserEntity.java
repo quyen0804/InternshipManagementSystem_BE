@@ -16,9 +16,10 @@ import java.time.LocalDate;
 public class UserEntity {
 
     @Id
+    @Column(unique = true, nullable = false)
     private String userId;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true, nullable = false)
     private String account;
 
     private String password;

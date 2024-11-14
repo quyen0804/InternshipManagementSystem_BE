@@ -1,6 +1,7 @@
 package com.ims.internship_management_system.controller;
 
 
+import com.ims.internship_management_system.exception.IMSRuntimeException;
 import com.ims.internship_management_system.model.AuditInternEntity;
 import com.ims.internship_management_system.model.dto.AuditInternDto;
 import com.ims.internship_management_system.model.mapper.AuditInternMapper;
@@ -12,6 +13,7 @@ import org.springframework.security.access.method.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,7 +27,7 @@ public class AuditInternController {
         return auditInternService.getAllAuditInternsByInternId(id);
     }
 
-    @GetMapping(path = "/create")
+    @PostMapping(path = "/create")
     public ResponseEntity<AuditInternDto> createAuditIntern(@PathVariable String auditId,
                                                             @RequestParam String internId) {
         AuditInternEntity auditInternEntity = auditInternService.createAuditIntern(auditId, internId);
@@ -36,6 +38,17 @@ public class AuditInternController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<AuditInternDto> getAuditInternById(@PathVariable String id) {
+        Optional<AuditInternDto> dto = auditInternService.getAuditInternsByAuditInternId(id);
+        return new ResponseEntity<>(
+                dto.orElseThrow(() -> new IMSRuntimeException(HttpStatus.NOT_FOUND,
+                        "Internal error. Try again.")),
+                HttpStatus.OK
+        );
+    }
+
 
 
 }
