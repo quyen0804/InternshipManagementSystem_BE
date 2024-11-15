@@ -2,6 +2,7 @@ package com.ims.internship_management_system.controller.auth;
 
 
 import com.ims.internship_management_system.constant.Auth;
+import com.ims.internship_management_system.exception.IMSRuntimeException;
 import com.ims.internship_management_system.model.InternEntity;
 import com.ims.internship_management_system.model.MentorEntity;
 import com.ims.internship_management_system.model.dto.JwtResponse;
@@ -11,6 +12,7 @@ import com.ims.internship_management_system.request.InternCreationRequest;
 import com.ims.internship_management_system.service.InternService;
 import com.ims.internship_management_system.service.MentorService;
 import com.ims.internship_management_system.service.security.AuthService;
+import com.ims.internship_management_system.util.JWTSecurityUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -59,6 +62,16 @@ public class AuthenticationController {
         Cookie cookie = new Cookie(Auth.JWT_COOKIE.getValue(), jwtResponse.getToken());
         response.addCookie(cookie);
         return ResponseEntity.ok(jwtResponse);
+    }
+
+    @GetMapping(path="get/my-profile")
+    public ResponseEntity<?> getMyProfile() {
+        var user = JWTSecurityUtil.getJWTUserInfo();
+        if (user.isEmpty()) {
+            throw new IMSRuntimeException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+        }
+            return ResponseEntity.ok(user.get());
+
     }
 
 }

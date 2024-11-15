@@ -32,10 +32,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String authorizationHeader = request.getHeader("Authorization");
         final String jwt;
         final String userEmail;
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+//        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
 //        jwt = authorizationHeader.substring(7);
         jwt = getCookie(request, Auth.JWT_COOKIE.getValue());
 
@@ -53,6 +53,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         }
+        filterChain.doFilter(request, response);
     }
 
     public String getCookie(HttpServletRequest request, String name) {
