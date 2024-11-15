@@ -24,7 +24,6 @@ public class IdGenerator {
     public static String getIdFromAccount(String account) {
         String[] i = account.split("@");
         return i[0];
-//        return i[0].toUpperCase();
     }
 }
 
