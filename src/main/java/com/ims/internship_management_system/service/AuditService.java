@@ -9,9 +9,11 @@ import com.ims.internship_management_system.repository.AuditRepository;
 import com.ims.internship_management_system.request.AuditFormCreationRequest;
 import com.ims.internship_management_system.util.generator.IdGenerator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,11 +37,11 @@ public class AuditService {
         return auditRepository.save(audit);
     }
 
-    public Optional<AuditEntity> getAuditByMentorID(String id) {
+    public List<AuditEntity> getAuditByMentorID(String id) {
         return auditRepository.findByMentorId(id);
     }
 
-    public Optional<AuditEntity> findAuditByMonth() {
+    public Optional<List<AuditEntity>> findAuditByMonth(int month, int year) {
         LocalDate currentDate = LocalDate.now();
         int currentMonth = currentDate.getMonthValue();
         int currentYear = currentDate.getYear();

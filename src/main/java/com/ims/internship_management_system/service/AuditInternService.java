@@ -1,5 +1,6 @@
 package com.ims.internship_management_system.service;
 
+import com.ims.internship_management_system.exception.IMSRuntimeException;
 import com.ims.internship_management_system.model.AuditInternEntity;
 import com.ims.internship_management_system.model.GradeEntity;
 import com.ims.internship_management_system.model.dto.AuditInternDto;
@@ -10,6 +11,7 @@ import com.ims.internship_management_system.repository.GradeRepository;
 import com.ims.internship_management_system.util.generator.IdGenerator;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,7 +52,7 @@ public class AuditInternService {
 
     public AuditInternDto addAuditInternGrade(String id, List<GradeDto> columns) {
         Optional<AuditInternEntity> optionalEntity = auditInternRepository.findAuditInternEntityByAuditInternId(id);
-
+//        AuditInternDto edited = auditInternRepository.
         if (optionalEntity.isPresent()) {
             AuditInternEntity auditInternEntity = optionalEntity.get();
             double sum=0;
@@ -86,6 +88,17 @@ public class AuditInternService {
             auditIntern.setAveGrade(sum/3);
           return auditInternMapper.toDTO(auditInternRepository.save(auditIntern));
 
+    }
+
+    public void deleteAuditIntern(String id) {
+        Optional<AuditInternEntity> optionalEntity = auditInternRepository.findAuditInternEntityByAuditInternId(id);
+        if (optionalEntity.isPresent()) {
+            AuditInternEntity auditInternEntity = optionalEntity.get();
+            auditInternRepository.delete(auditInternEntity);
+        }else{
+            throw new IMSRuntimeException(HttpStatus.NOT_FOUND,
+                    "Audit Intern Form with id " + id + " not found");
+        }
     }
 
 }

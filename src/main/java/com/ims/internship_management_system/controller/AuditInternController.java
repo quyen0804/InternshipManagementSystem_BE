@@ -4,6 +4,7 @@ package com.ims.internship_management_system.controller;
 import com.ims.internship_management_system.exception.IMSRuntimeException;
 import com.ims.internship_management_system.model.AuditInternEntity;
 import com.ims.internship_management_system.model.dto.AuditInternDto;
+import com.ims.internship_management_system.model.dto.GradeDto;
 import com.ims.internship_management_system.model.mapper.AuditInternMapper;
 import com.ims.internship_management_system.service.AuditInternService;
 import lombok.RequiredArgsConstructor;
@@ -44,9 +45,28 @@ public class AuditInternController {
         Optional<AuditInternDto> dto = auditInternService.getAuditInternsByAuditInternId(id);
         return new ResponseEntity<>(
                 dto.orElseThrow(() -> new IMSRuntimeException(HttpStatus.NOT_FOUND,
-                        "Internal error. Try again.")),
-                HttpStatus.OK
-        );
+                        "Internal error. Try again.")), HttpStatus.OK);
+    }
+
+    @PutMapping(path="{id}/evaluation")
+    public ResponseEntity<AuditInternDto> evaluation(@PathVariable String id,
+                                                     List<GradeDto> columns){
+        AuditInternDto edited = auditInternService.addAuditInternGrade(id, columns);
+        return ResponseEntity.ok().body(edited);
+
+
+    }
+
+    @DeleteMapping(path = "{id}/delete")
+    public ResponseEntity<?> deleteAuditIntern(@PathVariable String id) {
+        auditInternService.deleteAuditIntern(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping(path="{id}/edit")
+    public ResponseEntity<?> editGrade(@PathVariable String id, List<GradeDto> columns){
+        auditInternService.updateGrade(id, columns);
+        return new ResponseEntity<>("Edit successful.", HttpStatus.OK);
     }
 
 

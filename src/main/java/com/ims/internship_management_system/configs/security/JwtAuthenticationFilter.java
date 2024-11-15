@@ -38,6 +38,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 //        jwt = authorizationHeader.substring(7);
         jwt = getCookie(request, Auth.JWT_COOKIE.getValue());
+
+        if(jwt == null) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         userEmail = jwtService.extractUsername(jwt); //extract the email from JWT token
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);

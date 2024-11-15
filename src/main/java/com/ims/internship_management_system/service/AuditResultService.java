@@ -70,7 +70,8 @@ public class AuditResultService {
             auditResultEntity.setAveResult(totalSum/auditIntern.size());
             auditResultEntity.setQualify(auditResultEntity.getAveResult() >= 5 ? true : false);
 
-    // change status intern
+            // change status intern
+            changeQualifyStatus(internEntity);
         }
 
 
