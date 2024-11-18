@@ -26,11 +26,13 @@ public class AuditInternService {
 //    private final AuditService auditService;
 
 
-    public AuditInternEntity createAuditIntern(String auditId, String internId) {
+    public AuditInternEntity createAuditIntern(String auditId, String internId, String mentorId) {
         AuditInternEntity auditInternEntity = new AuditInternEntity();
         auditInternEntity.setAuditID(auditId);
         auditInternEntity.setResultId(IdGenerator.generateAuditResultId(internId));
         auditInternEntity.setAuditInternId(IdGenerator.generateAuditInternId(internId));
+        auditInternEntity.setInternId(internId);
+        auditInternEntity.setMentorId(mentorId);
         return auditInternRepository.save(auditInternEntity);
     }
 

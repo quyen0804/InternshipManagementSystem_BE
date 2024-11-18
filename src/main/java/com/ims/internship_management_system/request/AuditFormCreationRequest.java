@@ -12,7 +12,7 @@ import java.util.List;
 public class AuditFormCreationRequest {
     private String mentorId;
     private int evaluationPeriod;
-    private List<InternEntity> interns;
+    private List<String> interns; //intern id
 
 
 }

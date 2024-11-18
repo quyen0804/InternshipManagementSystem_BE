@@ -23,6 +23,7 @@ public class AuditInternEntity {
     private String auditInternId;
 
     private String internId;
+    private String mentorId;
 
     @CreationTimestamp
     private Timestamp createdTime;

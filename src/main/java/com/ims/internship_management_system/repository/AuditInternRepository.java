@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface AuditInternRepository extends JpaRepository<AuditInternEntity, Integer> {
+public interface AuditInternRepository extends JpaRepository<AuditInternEntity, String> {
      List<AuditInternEntity> findAuditInternByInternIdOrderByCreatedTimeDesc(String internId);
      List<AuditInternEntity> findAuditInternByResultIdOrderByCreatedTimeDesc(String resultId);
      Optional<AuditInternEntity> findAuditInternEntityByAuditInternId(String auditInternId);

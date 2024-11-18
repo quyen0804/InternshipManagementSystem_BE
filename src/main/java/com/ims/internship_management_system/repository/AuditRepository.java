@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface AuditRepository extends JpaRepository<AuditEntity, Integer> {
+public interface AuditRepository extends JpaRepository<AuditEntity, String> {
     Optional<AuditEntity> findByAuditId(String id);
 
     List<AuditEntity> findByMentorId(String id);

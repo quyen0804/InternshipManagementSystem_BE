@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path="/audit-form/{auditId}/audit-intern-form")
+@RequestMapping(path="/audit-form/audit-intern-form")
 public class AuditInternController {
     private final AuditInternService auditInternService;
     private final AuditInternMapper auditInternMapper;
@@ -28,17 +28,17 @@ public class AuditInternController {
         return auditInternService.getAllAuditInternsByInternId(id);
     }
 
-    @PostMapping(path = "/create")
-    public ResponseEntity<AuditInternDto> createAuditIntern(@PathVariable String auditId,
-                                                            @RequestParam String internId) {
-        AuditInternEntity auditInternEntity = auditInternService.createAuditIntern(auditId, internId);
-        if (auditInternEntity != null) {
-            AuditInternDto dto = auditInternMapper.toDTO(auditInternEntity);
-            return new ResponseEntity<>(dto, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+//    @PostMapping(path = "/create")
+//    public ResponseEntity<AuditInternDto> createAuditIntern(@PathVariable String auditId,
+//                                                            @RequestParam String internId) {
+//        AuditInternEntity auditInternEntity = auditInternService.createAuditIntern(auditId, internId);
+//        if (auditInternEntity != null) {
+//            AuditInternDto dto = auditInternMapper.toDTO(auditInternEntity);
+//            return new ResponseEntity<>(dto, HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//    }
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<AuditInternDto> getAuditInternById(@PathVariable String id) {
@@ -50,7 +50,7 @@ public class AuditInternController {
 
     @PutMapping(path="{id}/evaluation")
     public ResponseEntity<AuditInternDto> evaluation(@PathVariable String id,
-                                                     List<GradeDto> columns){
+                                                     @RequestBody List<GradeDto> columns){
         AuditInternDto edited = auditInternService.addAuditInternGrade(id, columns);
         return ResponseEntity.ok().body(edited);
 
