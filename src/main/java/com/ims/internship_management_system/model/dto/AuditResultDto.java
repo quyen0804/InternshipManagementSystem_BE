@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -20,9 +21,9 @@ public class AuditResultDto {
     private boolean isQualify;
 
     @CreationTimestamp
-    private Timestamp createTime;
+    private LocalDateTime createTime;
 
-    private List<AuditInternDto> interns;
+//    private List<AuditInternDto> interns;
 
 //    private int feedbackId;
 }

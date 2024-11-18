@@ -33,11 +33,17 @@ public class InternController {
         return internService.getInternDtoByInternId(id);
     }
 
+    @GetMapping(path="/entity-profile/{id}")
+    Optional<InternEntity> findInternByEntityProfile(@PathVariable String id) {
+        return internService.getInternByInternId(id);
+    }
+
+
     @PutMapping(path = "/edit-profile/{id}")
     public ResponseEntity<?> updatePassenger(@PathVariable String id, @RequestBody InternDto request) {
-        Optional<InternEntity> updated = internService.updateInternByInternId(id, request);
-        return updated.map(intern -> new ResponseEntity<>(intern, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        InternEntity updated = internService.updateInternByInternId(id, request);
+//        Optional<InternEntity> updated = internService.updateInternByInternId(id, request);
+        return ResponseEntity.ok(updated);
     }
     
 //    @GetMapping(path = "/search")

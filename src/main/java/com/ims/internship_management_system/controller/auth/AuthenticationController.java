@@ -1,6 +1,7 @@
 package com.ims.internship_management_system.controller.auth;
 
 
+import com.ims.internship_management_system.configs.security.UserPrincipal;
 import com.ims.internship_management_system.constant.Auth;
 import com.ims.internship_management_system.exception.IMSRuntimeException;
 import com.ims.internship_management_system.model.InternEntity;
@@ -19,10 +20,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @RestController
@@ -72,6 +75,14 @@ public class AuthenticationController {
         }
             return ResponseEntity.ok(user.get());
 
+    }
+
+    @PutMapping(path="user/change-password")
+    public ResponseEntity<?> changePassword(@AuthenticationPrincipal UserPrincipal principal,
+                                             @RequestParam String oldPassword,
+                                            @RequestParam String newPassword) {
+         authService.changePassword(principal, oldPassword, newPassword);
+        return (ResponseEntity<?>) ResponseEntity.ok();
     }
 
 }

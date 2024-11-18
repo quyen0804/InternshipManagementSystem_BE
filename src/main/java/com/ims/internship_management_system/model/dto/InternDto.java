@@ -16,7 +16,6 @@ import java.time.LocalDate;
 public class InternDto {
     private String userId;
     private String account;
-//    private String password;
     private String fullName;
     private String phone;
     private boolean gender;
@@ -24,8 +23,10 @@ public class InternDto {
     private String address;
     private String socialNum;
     private Role role;
+    private String firstPass;
     private String avatar;
     private InternStatus status;
+
     private String mentorId;
 
 }

@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table
@@ -26,7 +27,7 @@ public class AuditResultEntity {
     private boolean isQualify;
 
     @CreationTimestamp
-    private Timestamp createTime;
+    private LocalDateTime createTime;
 
     private int feedbackId;
 }

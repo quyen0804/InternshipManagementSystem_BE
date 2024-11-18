@@ -5,6 +5,7 @@ import com.ims.internship_management_system.constant.InternStatus;
 import com.ims.internship_management_system.model.AuditInternEntity;
 import com.ims.internship_management_system.model.AuditResultEntity;
 import com.ims.internship_management_system.model.InternEntity;
+import com.ims.internship_management_system.model.MentorEntity;
 import com.ims.internship_management_system.model.dto.AuditInternDto;
 import com.ims.internship_management_system.repository.AuditResultRepository;
 import com.ims.internship_management_system.repository.InternRepository;
@@ -15,6 +16,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuditResultService {
@@ -34,12 +36,14 @@ public class AuditResultService {
 
     // Scheduled method must be no-arg
     @Scheduled(cron = "0 0 8 ? * MON#1")
+//    @Scheduled(cron = "0 * * * * *")
     public void createAuditResult() {
 
         List<InternEntity> allActiveIntern=internService.findAllActiveInterns();
         for(InternEntity internEntity : allActiveIntern) {
             AuditResultEntity auditResultEntity = new AuditResultEntity();
             auditResultEntity.setResultId(IdGenerator.generateAuditResultId(internEntity.getUserId()));
+            auditResultEntity.setInternId(internEntity.getUserId());
             auditResultEntity.setAveResult(0);
             auditResultEntity.setMentorId(internEntity.getMentorId());
             auditResultEntity.setQualify(false);
@@ -90,6 +94,27 @@ public class AuditResultService {
             intern.setStatus(InternStatus.DISQUALIFIED);
         }
         return internRepository.save(intern);
+    }
+
+    public List<AuditResultEntity> getAuditResultEntitiesByInternId(String id) {
+        return auditResultRepository.findAuditResultEntitiesByInternId(id);
+    }
+
+    public Optional<AuditResultEntity> getAuditResultEntityByResultId(String id) {
+        return auditResultRepository.findAuditResultEntityByResultId(id);
+    }
+
+    public List<AuditResultEntity> getAuditResultEntitiesByMentorId(String mentor) {
+        return auditResultRepository.findAuditResultEntitiesByMentorId(mentor);
+    }
+
+    public List<AuditResultEntity> getAuditResultEntitiesByMentorIdAndCreateDate(String mentor,
+                                                                                 int month, int year) {
+        return auditResultRepository.findAllByMentorIdAndCreateDate(mentor, month, year);
+    }
+
+    public List<AuditResultEntity> getAllAuditResultEntities(){
+        return auditResultRepository.findAll();
     }
 
 

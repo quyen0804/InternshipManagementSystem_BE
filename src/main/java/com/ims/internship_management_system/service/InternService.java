@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,15 +75,17 @@ public class InternService {
         return internRepository.findInternEntityByUserId(id).map(internMapper::toDTO);
     }
 
-    public Optional<InternEntity> updateInternByInternId(String id, InternDto request) {
-        Optional<InternEntity> exist = getInternDtoByInternId(id).map(internMapper::toEntity);
-        exist.ifPresent(intern -> {
+    public InternEntity updateInternByInternId(String id, InternDto request) {
+        InternEntity intern =
+                getInternByInternId(id).orElseThrow(() -> new IMSRuntimeException(HttpStatus.NOT_FOUND
+                        , "user not found"));
         intern.setPhone(request.getPhone());
         intern.setDob(request.getDob());
         intern.setGender(request.isGender());
         intern.setAddress(request.getAddress());
-        } );
-        return exist;
+        internRepository.save(intern);
+
+        return intern;
     }
 
 
@@ -99,7 +102,7 @@ public class InternService {
 
     public List<InternEntity> findAllActiveInterns() {
         List<InternEntity> all = getAllInternEntities();
-        List<InternEntity> intern = null;
+        List<InternEntity> intern = new ArrayList<>();
         for (InternEntity internEntity : all) {
             if (internEntity.getStatus().equals(InternStatus.ACTIVE)) {
                 intern.add(internEntity);
