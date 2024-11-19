@@ -14,6 +14,8 @@ import com.ims.internship_management_system.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 //import lombok.var;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -46,22 +48,25 @@ public class AuthService {
         return new String(password);
     }
 
-    public List<InternEntity> findAllActiveIntern(InternStatus status) {
-        return internRepository.findAllByStatus(InternStatus.ACTIVE);
-    }
+
 
     public String passwordHash(String rawPassword) {
         return passwordEncoder.encode(rawPassword);
     }
 
-    public void changePassword(UserPrincipal user, String oldPassword, String newPassword) {
+    public String changePassword(UserPrincipal user, String oldPassword, String newPassword) {
         if(passwordEncoder.matches(oldPassword, user.getPassword())) {
             var u =
                     userRepository.findById(user.getId()).orElseThrow(()->
                             new IMSRuntimeException(HttpStatus.INTERNAL_SERVER_ERROR,"User not found"));
             u.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(u);
+            return "Set password successful";
+        }else{
+            throw new IMSRuntimeException(HttpStatus.NOT_FOUND,"Wrong password");
         }
     }
+
 
     public JwtResponse login(LoginRequest loginRequest) {
         var i = userRepository.getUserEntityByAccount(

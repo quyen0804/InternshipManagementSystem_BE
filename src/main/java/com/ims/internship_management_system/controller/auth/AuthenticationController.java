@@ -77,13 +77,15 @@ public class AuthenticationController {
 
     }
 
-    @PutMapping(path="user/change-password")
+    @PutMapping(path = "user/change-password")
     public ResponseEntity<?> changePassword(@AuthenticationPrincipal UserPrincipal principal,
-                                             @RequestParam String oldPassword,
+                                            @RequestParam String oldPassword,
                                             @RequestParam String newPassword) {
-         authService.changePassword(principal, oldPassword, newPassword);
-        return (ResponseEntity<?>) ResponseEntity.ok();
+        String s = authService.changePassword(principal, oldPassword, newPassword);
+        return ResponseEntity.ok(s);
+//        return ResponseEntity.ok().build(s);
     }
+
 
 }
 

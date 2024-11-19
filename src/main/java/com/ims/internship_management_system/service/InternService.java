@@ -58,6 +58,10 @@ public class InternService {
                 .toList();
     }
 
+    public List<InternEntity> findAllActiveIntern() {
+        return internRepository.findAllByStatus(InternStatus.ACTIVE);
+    }
+
     public List<InternEntity> getAllInternEntities() {
         return internRepository.findAll();
     }

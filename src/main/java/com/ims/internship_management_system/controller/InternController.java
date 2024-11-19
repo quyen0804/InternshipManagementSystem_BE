@@ -80,5 +80,10 @@ public class InternController {
         return ResponseEntity.ok().body(internMapper.toDTO(intern));
     }
 
+    @GetMapping(path = "/get-active")
+    public ResponseEntity<?> getInternActive() {
+        List<InternDto> interns = internService.findAllActiveIntern().stream().map(internMapper::toDTO).toList();
+        return ResponseEntity.ok().body(interns);
+    }
 }
 
