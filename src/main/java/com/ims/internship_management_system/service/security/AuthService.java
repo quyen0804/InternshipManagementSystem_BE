@@ -50,9 +50,9 @@ public class AuthService {
 
 
 
-    public String passwordHash(String rawPassword) {
-        return passwordEncoder.encode(rawPassword);
-    }
+//    public String passwordHash(String rawPassword) {
+//        return passwordEncoder.encode(rawPassword);
+//    }
 
     public String changePassword(UserPrincipal user, String oldPassword, String newPassword) {
         if(passwordEncoder.matches(oldPassword, user.getPassword())) {

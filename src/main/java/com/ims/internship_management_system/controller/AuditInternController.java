@@ -62,7 +62,8 @@ public class AuditInternController {
     }
 
     @PutMapping(path="{id}/edit")
-    public ResponseEntity<?> editGrade(@PathVariable String id, List<GradeDto> columns){
+    public ResponseEntity<?> editGrade(@PathVariable String id,
+                                       @RequestBody List<GradeDto> columns){
         auditInternService.updateGrade(id, columns);
         return new ResponseEntity<>("Edit successful.", HttpStatus.OK);
     }

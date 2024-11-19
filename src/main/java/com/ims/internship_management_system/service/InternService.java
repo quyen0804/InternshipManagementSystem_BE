@@ -152,11 +152,20 @@ public class InternService {
 //        return intern;
 //    }
 
-    public InternEntity changeAccountStatus(String id, InternStatus status){
+//    public InternEntity changeAccountStatus(String id, InternStatus status){
+//        InternEntity intern =
+//                internRepository.findInternEntityByUserId(id)
+//                        .orElseThrow(() -> new IMSRuntimeException(HttpStatus.NOT_FOUND, "Intern not found"));
+//        intern.setStatus(status);
+//        internRepository.save(intern);
+//        return intern;
+//    }
+
+    public InternEntity changeAccountStatus(String id, InternDto request){
         InternEntity intern =
                 internRepository.findInternEntityByUserId(id)
                         .orElseThrow(() -> new IMSRuntimeException(HttpStatus.NOT_FOUND, "Intern not found"));
-        intern.setStatus(status);
+        intern.setStatus(request.getStatus());
         internRepository.save(intern);
         return intern;
     }

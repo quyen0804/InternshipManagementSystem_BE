@@ -73,10 +73,17 @@ public class InternController {
     }
 
 
+//    @PutMapping(path="/{id}/change-intern-account-status")
+//    public ResponseEntity<InternDto> changeInternAccountStatus(@PathVariable String id,
+//                                                               @RequestBody InternStatus status){
+//        InternEntity intern = internService.changeAccountStatus(id, status);
+//        return ResponseEntity.ok().body(internMapper.toDTO(intern));
+//    }
+
     @PutMapping(path="/{id}/change-intern-account-status")
     public ResponseEntity<InternDto> changeInternAccountStatus(@PathVariable String id,
-                                                               @RequestBody InternStatus status){
-        InternEntity intern = internService.changeAccountStatus(id, status);
+                                                               @RequestBody InternDto request){
+        InternEntity intern = internService.changeAccountStatus(id, request);
         return ResponseEntity.ok().body(internMapper.toDTO(intern));
     }
 
@@ -85,5 +92,7 @@ public class InternController {
         List<InternDto> interns = internService.findAllActiveIntern().stream().map(internMapper::toDTO).toList();
         return ResponseEntity.ok().body(interns);
     }
+
+    //
 }
 
