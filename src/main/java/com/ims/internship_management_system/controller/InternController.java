@@ -61,8 +61,13 @@ public class InternController {
     }
 
     //get list intern theo id mentor
-
-//    @GetMapping
+    @GetMapping(path="/get-by-mentor/{mentorId}")
+    public ResponseEntity<?> getInternByMentorId(@PathVariable String mentorId) {
+        List<InternDto> interns =
+                internService.findAllInternByMentorId(mentorId)
+                        .stream().map(internMapper::toDTO).toList();
+        return ResponseEntity.ok().body(interns);
+    }
 
 
 }

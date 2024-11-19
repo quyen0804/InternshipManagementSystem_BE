@@ -134,15 +134,18 @@ public class InternService {
         return intern;
     }
 
-    public InternEntity findAllInternByMentorId(String mentorId) {
-        return internRepository.findInternEntityByMentorId(mentorId).orElse(null);
+    public List<InternEntity> findAllInternByMentorId(String mentorId) {
+        return internRepository.findInternEntityByMentorId(mentorId);
     }
 
     public List<InternEntity> findAllInternByMentorBu(String bu){
         List<MentorEntity> mentors = mentorService.findAllMentorByBu(bu);
         List<InternEntity> intern = null;
         for(MentorEntity mentor: mentors){
-            intern.add(findAllInternByMentorId(mentor.getUserId()));
+            List<InternEntity> internList = findAllInternByMentorId(mentor.getUserId());
+            for(InternEntity interns: internList){
+                intern.add(interns);
+            }
         }
         return null;
     }
