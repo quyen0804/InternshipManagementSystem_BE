@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,7 @@ import java.util.List;
 public class AuditDto {
 //    private int auditId;
     @CreatedDate
-    private Date date;
+    private LocalDateTime date;
 
     private EvaluationPeriod evaluationPeriod;
 //    private int resultId;

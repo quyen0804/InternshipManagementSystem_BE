@@ -27,6 +27,8 @@ public class InternDto {
     private String avatar;
     private InternStatus status;
 
+    private LocalDate joinDate;
+
     private String mentorId;
 
 }

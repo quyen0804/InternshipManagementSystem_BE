@@ -60,6 +60,10 @@ public class InternController {
         return new ResponseEntity<>("Intern not found", HttpStatus.NOT_FOUND);
     }
 
+    //get list intern theo id mentor
+
+//    @GetMapping
+
 
 }
 

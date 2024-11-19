@@ -27,11 +27,13 @@ public class AuditService {
     private final MentorService mentorService;
 
     public AuditEntity createAudit(AuditFormCreationRequest request) {
-        AuditEntity audit = new AuditEntity();
+
         if(mentorService.findById(request.getMentorId()).isEmpty()) {
             throw new IMSRuntimeException(HttpStatus.NOT_FOUND, "Mentor id not found");
         }
-        audit.setAuditId(IdGenerator.generateAuditId(request.getMentorId()));
+        String id = IdGenerator.generateAuditId(request.getMentorId());
+        AuditEntity audit = checkExisted(id);
+
         audit.setEvaluationPeriod(EvaluationPeriod.fromValue(request.getEvaluationPeriod()));
         audit.setMentorId(request.getMentorId());
 //        new AuditParticipants(audit.getAuditId(), audit.getMentorId(), Role.MENTOR);
@@ -43,6 +45,16 @@ public class AuditService {
         }
 
         return auditRepository.save(audit);
+    }
+
+    public AuditEntity checkExisted(String id) {
+        if(getAuditById(id).isEmpty()) {
+            AuditEntity audit = new AuditEntity();
+            audit.setAuditId(id);
+            return audit;
+        }else{
+            return getAuditById(id).get();
+        }
     }
 
     public List<AuditEntity> getAuditByMentorID(String id) {
