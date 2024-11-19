@@ -1,6 +1,9 @@
 package com.ims.internship_management_system.controller;
 
+import com.ims.internship_management_system.constant.InternStatus;
 import com.ims.internship_management_system.model.InternEntity;
+import com.ims.internship_management_system.model.dto.AuditInternDto;
+import com.ims.internship_management_system.model.dto.GradeDto;
 import com.ims.internship_management_system.model.dto.InternDto;
 import com.ims.internship_management_system.model.mapper.InternMapper;
 import com.ims.internship_management_system.request.InternCreationRequest;
@@ -69,6 +72,13 @@ public class InternController {
         return ResponseEntity.ok().body(interns);
     }
 
+
+    @PutMapping(path="/{id}/change-intern-account-status")
+    public ResponseEntity<InternDto> changeInternAccountStatus(@PathVariable String id,
+                                                               @RequestBody InternStatus status){
+        InternEntity intern = internService.changeAccountStatus(id, status);
+        return ResponseEntity.ok().body(internMapper.toDTO(intern));
+    }
 
 }
 

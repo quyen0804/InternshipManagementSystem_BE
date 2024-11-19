@@ -92,8 +92,10 @@ public class AuditResultService {
         }
         if(count>=2){
             intern.setStatus(InternStatus.DISQUALIFIED);
+        } else if (count==1) {
+            intern.setStatus(InternStatus.WARNING);
         }
-        return internRepository.save(intern);
+            return internRepository.save(intern);
     }
 
     public List<AuditResultEntity> getAuditResultEntitiesByInternId(String id) {

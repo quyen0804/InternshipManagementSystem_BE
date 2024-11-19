@@ -53,8 +53,6 @@ public class AuditInternController {
                                                      @RequestBody List<GradeDto> columns){
         AuditInternDto edited = auditInternService.addAuditInternGrade(id, columns);
         return ResponseEntity.ok().body(edited);
-
-
     }
 
     @DeleteMapping(path = "{id}/delete")

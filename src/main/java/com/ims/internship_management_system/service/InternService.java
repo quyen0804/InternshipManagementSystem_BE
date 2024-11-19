@@ -26,7 +26,6 @@ import java.util.Optional;
 public class InternService {
     private final InternRepository internRepository;
     private final InternMapper internMapper;
-//    private final PasswordEncoder passwordEncoder;
     private final AuthService authService;
     private final MentorService mentorService;
     private final PasswordEncoder passwordEncoder;
@@ -111,16 +110,6 @@ public class InternService {
         return intern;
     }
 
-    public Optional<InternEntity> changeAccountStatus(String id, InternStatus status) {
-        Optional<InternEntity> intern = internRepository.findInternEntityByUserId(id);
-
-        intern.ifPresent(internEntity -> {
-            internEntity.setStatus(status);
-            internRepository.save(internEntity);
-        });
-
-        return intern;
-    }
 
 
     public List<InternEntity> findAllNotActiveInterns() {
@@ -148,6 +137,24 @@ public class InternService {
             }
         }
         return null;
+    }
+
+//    public InternEntity changeAccountStatus(String id, int status){
+//        InternEntity intern =
+//                internRepository.findInternEntityByUserId(id)
+//                        .orElseThrow(() -> new IMSRuntimeException(HttpStatus.NOT_FOUND, "Intern not found"));
+//        intern.setStatus(InternStatus.fromValue(status));
+//        internRepository.save(intern);
+//        return intern;
+//    }
+
+    public InternEntity changeAccountStatus(String id, InternStatus status){
+        InternEntity intern =
+                internRepository.findInternEntityByUserId(id)
+                        .orElseThrow(() -> new IMSRuntimeException(HttpStatus.NOT_FOUND, "Intern not found"));
+        intern.setStatus(status);
+        internRepository.save(intern);
+        return intern;
     }
 
 //    public Optional<InternDto> searchInternEntitiesByInput(@Param("input") String input){

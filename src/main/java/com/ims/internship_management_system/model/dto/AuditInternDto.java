@@ -28,5 +28,5 @@ public class AuditInternDto {
     private double aveGrade;
 
 
-    private List<GradeDto> grades;
+//    private List<GradeDto> grades;
 }
