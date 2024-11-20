@@ -61,6 +61,10 @@ public class InternService {
         return internRepository.findAllByStatus(status);
     }
 
+    public List<InternEntity> findAllByStatusAndMentorId(InternStatus status, String mentor){
+        return internRepository.findAllByStatusAndMentorId(status, mentor);
+    }
+
     public List<InternEntity> getAllInternEntities() {
         return internRepository.findAll();
     }

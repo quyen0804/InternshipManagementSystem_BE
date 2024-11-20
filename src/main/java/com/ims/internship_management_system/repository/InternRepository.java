@@ -16,6 +16,7 @@ import java.util.Optional;
 public interface InternRepository extends JpaRepository<InternEntity, Integer> {
     List<InternEntity> findInternEntityByMentorId(String id);
     List<InternEntity> findAllByStatus(InternStatus internStatus);
+    List<InternEntity> findAllByStatusAndMentorId(InternStatus internStatus, String mentorId);
 //    @Query
 //    Optional<InternEntity> searchInternEntitiesByInput(@Param("input") String input);
     Optional<InternEntity> findInternEntityByUserId(String internId);

@@ -84,31 +84,37 @@ public class InternController {
         return ResponseEntity.ok().body(internMapper.toDTO(intern));
     }
 
-    @GetMapping(path = "/status/get-active")
-    public ResponseEntity<?> getInternActive() {
+    @GetMapping(path = "/{mentor}/status/get-active")
+    public ResponseEntity<?> getInternActive(@PathVariable String mentor) {
         List<InternDto> interns =
-                internService.findAllByStatus(InternStatus.ACTIVE).stream().map(internMapper::toDTO).toList();
+                internService.findAllByStatusAndMentorId(InternStatus.ACTIVE, mentor).stream().map(internMapper::toDTO).toList();
         return ResponseEntity.ok().body(interns);
     }
 
-    @GetMapping(path = "/status/get-inactive")
-    public ResponseEntity<?> getInternInactive() {
+    @GetMapping(path = "/{mentor}/status/get-inactive")
+    public ResponseEntity<?> getInternInactive(@PathVariable String mentor) {
         List<InternDto> interns =
-                internService.findAllByStatus(InternStatus.INACTIVE).stream().map(internMapper::toDTO).toList();
+                internService.findAllByStatusAndMentorId(InternStatus.INACTIVE, mentor).stream().map(internMapper::toDTO).toList();
         return ResponseEntity.ok().body(interns);
     }
 
-    @GetMapping(path = "/status/get-warning")
-    public ResponseEntity<?> getInternWarning() {
+    @GetMapping(path = "/{mentor}/status/get-warning")
+    public ResponseEntity<?> getInternWarning(@PathVariable String mentor) {
         List<InternDto> interns =
-                internService.findAllByStatus(InternStatus.WARNING).stream().map(internMapper::toDTO).toList();
+                internService.findAllByStatusAndMentorId(InternStatus.WARNING, mentor).stream().map(internMapper::toDTO).toList();
         return ResponseEntity.ok().body(interns);
     }
 
-    @GetMapping(path = "/status/get-disqualify")
-    public ResponseEntity<?> getInternDisqualify() {
+    @GetMapping(path = "/{mentor}/status/get-disqualify")
+    public ResponseEntity<?> getInternDisqualify(@PathVariable String mentor) {
         List<InternDto> interns =
-                internService.findAllByStatus(InternStatus.DISQUALIFIED).stream().map(internMapper::toDTO).toList();
+                internService.findAllByStatusAndMentorId(InternStatus.DISQUALIFIED, mentor).stream().map(internMapper::toDTO).toList();
+        return ResponseEntity.ok().body(interns);
+    }
+
+    @GetMapping(path = "/status/filter-all")
+    public ResponseEntity<?> filterAllInterns(InternStatus status) {
+        List<InternDto> interns = internService.findAllByStatus(status).stream().map(internMapper::toDTO).toList();
         return ResponseEntity.ok().body(interns);
     }
 
