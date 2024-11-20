@@ -34,7 +34,7 @@ public class AuditInternEntity {
     @UpdateTimestamp
     private Timestamp updatedTime;
 
-    private String auditID;
+    private String auditId;
     private String resultId;
 
 //    private int gradeId;

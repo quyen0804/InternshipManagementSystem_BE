@@ -28,7 +28,7 @@ public class AuditInternService {
 
     public AuditInternEntity createAuditIntern(String auditId, String internId, String mentorId) {
         AuditInternEntity auditInternEntity = new AuditInternEntity();
-        auditInternEntity.setAuditID(auditId);
+        auditInternEntity.setAuditId(auditId);
         auditInternEntity.setResultId(IdGenerator.generateAuditResultId(internId));
         auditInternEntity.setAuditInternId(IdGenerator.generateAuditInternId(internId));
         auditInternEntity.setInternId(internId);
@@ -50,6 +50,10 @@ public class AuditInternService {
 
     public Optional<AuditInternDto> getAuditInternsByAuditInternId(String id) {
         return auditInternRepository.findAuditInternEntityByAuditInternId(id).map(auditInternMapper::toDTO);
+    }
+
+    public List<AuditInternEntity> getAuditInternsByAuditId(String id) {
+        return auditInternRepository.findAuditInternByAuditId(id);
     }
 
     public AuditInternDto addAuditInternGrade(String id, List<GradeDto> columns) {

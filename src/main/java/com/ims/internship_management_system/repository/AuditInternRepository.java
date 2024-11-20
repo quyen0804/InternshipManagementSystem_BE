@@ -12,4 +12,6 @@ public interface AuditInternRepository extends JpaRepository<AuditInternEntity, 
      List<AuditInternEntity> findAuditInternByInternIdOrderByCreatedTimeDesc(String internId);
      List<AuditInternEntity> findAuditInternByResultIdOrderByCreatedTimeDesc(String resultId);
      Optional<AuditInternEntity> findAuditInternEntityByAuditInternId(String auditInternId);
+
+    List<AuditInternEntity> findAuditInternByAuditId(String id);
 }

@@ -2,6 +2,8 @@ package com.ims.internship_management_system.model;
 
 import com.ims.internship_management_system.constant.Role;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
@@ -12,8 +14,16 @@ import lombok.*;
 @AllArgsConstructor
 public class AuditParticipants {
     @Id
-    private String auditInternId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id; // Ensure this is the primary key
+
+    private String auditId;
     private String userId;
     private Role role;
 
+    public AuditParticipants(String auditId, String userId, Role role) {
+        this.auditId = auditId;
+        this.userId = userId;
+        this.role = role;
+    }
 }

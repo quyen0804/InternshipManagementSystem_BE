@@ -25,7 +25,7 @@ public class AuditDto {
 
     private EvaluationPeriod evaluationPeriod;
 //    private int resultId;
-    private List<InternEntity> interns;
-    private List<AuditInternEntity> auditInterns;
+    private List<InternDto> interns;
+    private List<AuditInternDto> auditInterns;
 
 }

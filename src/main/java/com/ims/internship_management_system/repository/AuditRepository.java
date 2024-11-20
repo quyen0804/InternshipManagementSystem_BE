@@ -18,6 +18,6 @@ public interface AuditRepository extends JpaRepository<AuditEntity, String> {
     List<AuditEntity> findByMentorId(String id);
 
     @Query("SELECT a FROM AuditEntity a WHERE MONTH(a.date) = :month AND YEAR(a.date) = :year")
-    Optional<List<AuditEntity>> findByMonthAndYear(@Param("month") int month,
+    List<AuditEntity> findByMonthAndYear(@Param("month") int month,
                                                   @Param("year") int year);
 }
