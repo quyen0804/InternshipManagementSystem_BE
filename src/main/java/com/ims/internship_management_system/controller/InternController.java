@@ -2,11 +2,8 @@ package com.ims.internship_management_system.controller;
 
 import com.ims.internship_management_system.constant.InternStatus;
 import com.ims.internship_management_system.model.InternEntity;
-import com.ims.internship_management_system.model.dto.AuditInternDto;
-import com.ims.internship_management_system.model.dto.GradeDto;
 import com.ims.internship_management_system.model.dto.InternDto;
 import com.ims.internship_management_system.model.mapper.InternMapper;
-import com.ims.internship_management_system.request.InternCreationRequest;
 import com.ims.internship_management_system.service.InternService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -87,12 +84,53 @@ public class InternController {
         return ResponseEntity.ok().body(internMapper.toDTO(intern));
     }
 
-    @GetMapping(path = "/get-active")
+    @GetMapping(path = "/status/get-active")
     public ResponseEntity<?> getInternActive() {
-        List<InternDto> interns = internService.findAllActiveIntern().stream().map(internMapper::toDTO).toList();
+        List<InternDto> interns =
+                internService.findAllByStatus(InternStatus.ACTIVE).stream().map(internMapper::toDTO).toList();
         return ResponseEntity.ok().body(interns);
     }
 
-    //
+    @GetMapping(path = "/status/get-inactive")
+    public ResponseEntity<?> getInternInactive() {
+        List<InternDto> interns =
+                internService.findAllByStatus(InternStatus.INACTIVE).stream().map(internMapper::toDTO).toList();
+        return ResponseEntity.ok().body(interns);
+    }
+
+    @GetMapping(path = "/status/get-warning")
+    public ResponseEntity<?> getInternWarning() {
+        List<InternDto> interns =
+                internService.findAllByStatus(InternStatus.WARNING).stream().map(internMapper::toDTO).toList();
+        return ResponseEntity.ok().body(interns);
+    }
+
+    @GetMapping(path = "/status/get-disqualify")
+    public ResponseEntity<?> getInternDisqualify() {
+        List<InternDto> interns =
+                internService.findAllByStatus(InternStatus.DISQUALIFIED).stream().map(internMapper::toDTO).toList();
+        return ResponseEntity.ok().body(interns);
+    }
+
+    @GetMapping(path="/search")
+    public ResponseEntity<?> searchByNameAndAccount(@RequestParam(required = false) String name,
+                                                    @RequestParam(required = false) String account,
+                                                    @RequestParam(required = false) String phone,
+                                                    @RequestParam(required = false) String social){
+        List<InternDto> interns =
+                internService.findInternByDynamicQuery(name, account, phone, social).stream().map(internMapper::toDTO).toList();
+        return ResponseEntity.ok().body(interns);
+    }
+
+    @GetMapping(path = "/search-keyword")
+    public ResponseEntity<?> searchWithKeyword(@RequestParam String keyword) {
+        List<InternDto> interns = internService
+                .searchInternByKeyword(keyword)
+                .stream()
+                .map(internMapper::toDTO)
+                .toList();
+        return ResponseEntity.ok().body(interns);
+    }
+
 }
 

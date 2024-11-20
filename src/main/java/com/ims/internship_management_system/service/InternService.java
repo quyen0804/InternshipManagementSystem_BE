@@ -12,7 +12,6 @@ import com.ims.internship_management_system.request.InternCreationRequest;
 import com.ims.internship_management_system.service.security.AuthService;
 import com.ims.internship_management_system.util.generator.IdGenerator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -58,8 +57,8 @@ public class InternService {
                 .toList();
     }
 
-    public List<InternEntity> findAllActiveIntern() {
-        return internRepository.findAllByStatus(InternStatus.ACTIVE);
+    public List<InternEntity> findAllByStatus(InternStatus status) {
+        return internRepository.findAllByStatus(status);
     }
 
     public List<InternEntity> getAllInternEntities() {
@@ -170,7 +169,30 @@ public class InternService {
         return intern;
     }
 
-//    public Optional<InternDto> searchInternEntitiesByInput(@Param("input") String input){
-//        return internRepository.searchInternEntitiesByInput(input).map(internMapper::toDTO);
+
+//    public List<InternEntity> findInternByNameAndAccount(String nameInput, String accountInput,
+//                                                         String phoneInput, String socialInput){
+//        String name = (nameInput != null) ? "%" + nameInput + "%" : "%";
+//        String account = (accountInput != null) ? "%" + accountInput + "%" : "%";
+//        String phone = (phoneInput != null) ? "%" + phoneInput + "%" : "%";
+//        String social = (socialInput != null) ? "%" + socialInput + "%" : "%";
+//        return internRepository.findInternEntitiesByFullNameOrAccountOrPhoneOrSocialNumLikeIgnoreCase(name,
+//                account, phone, social);
 //    }
+
+    public List<InternEntity> findInternByDynamicQuery(String nameInput, String accountInput,
+                                                       String phoneInput, String socialInput) {
+        String name = (nameInput != null) ? "%" + nameInput + "%" : null;
+        String account = (accountInput != null) ? "%" + accountInput + "%" : null;
+        String phone = (phoneInput != null) ? "%" + phoneInput + "%" : null;
+        String social = (socialInput != null) ? "%" + socialInput + "%" : null;
+
+        return internRepository.findInternByDynamicQuery(name, account, phone, social);
+    }
+
+    public List<InternEntity> searchInternByKeyword(String keywordInput) {
+        String keyword = (keywordInput != null) ? keywordInput.trim() : "";
+        return internRepository.searchByKeyword(keyword);
+    }
+
 }
