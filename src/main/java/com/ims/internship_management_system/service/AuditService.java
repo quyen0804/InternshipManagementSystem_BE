@@ -45,8 +45,15 @@ public class AuditService {
         if(mentorService.findById(request.getMentorId()).isEmpty()) {
             throw new IMSRuntimeException(HttpStatus.NOT_FOUND, "Mentor id not found");
         }
+
         String id = IdGenerator.generateAuditId(request.getMentorId());
-        AuditEntity audit = checkExisted(id);
+        AuditEntity audit = new AuditEntity();
+
+        if(getAuditById(id).isEmpty()) {
+            audit.setAuditId(id);
+        }else{
+            audit = getAuditById(id).get();
+        }
 
         audit.setEvaluationPeriod(EvaluationPeriod.fromValue(request.getEvaluationPeriod()));
         audit.setMentorId(request.getMentorId());
@@ -85,15 +92,6 @@ public class AuditService {
         return auditRepository.findAll();
     }
 
-    public AuditEntity checkExisted(String id) {
-        if(getAuditById(id).isEmpty()) {
-            AuditEntity audit = new AuditEntity();
-            audit.setAuditId(id);
-            return audit;
-        }else{
-            return getAuditById(id).get();
-        }
-    }
 
     public List<AuditEntity> getAuditByMentorID(String id) {
         return auditRepository.findByMentorId(id);

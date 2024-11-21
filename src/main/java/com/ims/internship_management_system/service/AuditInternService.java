@@ -33,7 +33,11 @@ public class AuditInternService {
         auditInternEntity.setAuditInternId(IdGenerator.generateAuditInternId(internId));
         auditInternEntity.setInternId(internId);
         auditInternEntity.setMentorId(mentorId);
-        return auditInternRepository.save(auditInternEntity);
+        try {
+            return auditInternRepository.save(auditInternEntity);
+        }catch (Exception e){
+            throw new IMSRuntimeException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
     }
 
     public List<AuditInternDto> getAllAuditInterns() {
@@ -46,6 +50,10 @@ public class AuditInternService {
 
     public List<AuditInternDto> getAllAuditInternsByResultId(String resultId) {
         return auditInternRepository.findAuditInternByResultIdOrderByCreatedTimeDesc(resultId).stream().map(auditInternMapper::toDTO).toList();
+    }
+
+    public List<AuditInternEntity> getByMentorId(String mentorId) {
+        return auditInternRepository.findAuditInternByMentorId(mentorId);
     }
 
     public Optional<AuditInternDto> getAuditInternsByAuditInternId(String id) {

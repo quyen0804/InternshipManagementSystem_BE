@@ -28,6 +28,18 @@ public class AuditInternController {
         return auditInternService.getAllAuditInternsByInternId(id);
     }
 
+    @GetMapping(path = "/get-all")
+    public List<AuditInternDto> getAllAuditInterns() {
+        return auditInternService.getAllAuditInterns();
+    }
+
+    @GetMapping(path = "/get-by-mentor-id/{mentor}")
+    public ResponseEntity<?> getByMentorId(@PathVariable String mentor) {
+        List<AuditInternDto> list =
+                auditInternService.getByMentorId(mentor).stream().map(auditInternMapper::toDTO).toList();
+        return ResponseEntity.ok().body(list);
+    }
+
 //    @PostMapping(path = "/create")
 //    public ResponseEntity<AuditInternDto> createAuditIntern(@PathVariable String auditId,
 //                                                            @RequestParam String internId) {

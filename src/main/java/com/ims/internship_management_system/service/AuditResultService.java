@@ -36,7 +36,7 @@ public class AuditResultService {
 
     // Scheduled method must be no-arg
     @Scheduled(cron = "0 0 8 ? * MON#1")
-//    @Scheduled(cron = "0 * * * * *")
+//    @Scheduled(cron = " 0 * * * * *")
     public void createAuditResult() {
 
         List<InternEntity> allActiveIntern=internService.findAllActiveInterns();
@@ -86,7 +86,7 @@ public class AuditResultService {
         List<AuditResultEntity> results =
                 auditResultRepository.findAuditResultEntitiesByInternId(intern.getUserId());
         for(AuditResultEntity auditResultEntity : results) {
-            if(auditResultEntity.isQualify()==false){
+            if(!auditResultEntity.isQualify()){
                 count++;
             }
         }
