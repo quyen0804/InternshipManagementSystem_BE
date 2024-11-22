@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,9 +34,11 @@ public class JwtService {
         return generateToken(new HashMap<>(), userDetails);
     }
 
-    public String generateTokenFromUsernameAndRole(String username, Role role) {
+    public String generateTokenFromUserIdAndUsernameAndRole(String userId, String username,
+                                                            Role role) {
         return Jwts.builder()
 //                .setPayload(role.toString())
+                .claim("userId",userId)
                 .claim("role", role.toString())
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))

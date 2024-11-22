@@ -1,27 +1,20 @@
 package com.ims.internship_management_system.service.security;
 
 import com.ims.internship_management_system.configs.security.UserPrincipal;
-import com.ims.internship_management_system.constant.InternStatus;
 import com.ims.internship_management_system.constant.LetterAndNumber;
-import com.ims.internship_management_system.constant.Role;
 import com.ims.internship_management_system.exception.IMSRuntimeException;
-import com.ims.internship_management_system.model.InternEntity;
-import com.ims.internship_management_system.model.UserEntity;
 import com.ims.internship_management_system.model.dto.JwtResponse;
 import com.ims.internship_management_system.model.dto.LoginRequest;
 import com.ims.internship_management_system.repository.InternRepository;
 import com.ims.internship_management_system.repository.UserRepository;
+import com.ims.internship_management_system.util.generator.IdGenerator;
 import lombok.RequiredArgsConstructor;
 //import lombok.var;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -75,7 +68,9 @@ public class AuthService {
             if(!passwordEncoder.matches(loginRequest.getPassword(), i.getPassword())){
                 throw new IMSRuntimeException(HttpStatus.BAD_REQUEST,"Wrong password");
             }
-        String token =  jwtService.generateTokenFromUsernameAndRole(loginRequest.getUsername(), i.getRole());
+        String token =
+                jwtService.generateTokenFromUserIdAndUsernameAndRole(IdGenerator.getIdFromAccount(loginRequest.getUsername()),
+                loginRequest.getUsername(), i.getRole());
         return new JwtResponse(token);
     }
 }
