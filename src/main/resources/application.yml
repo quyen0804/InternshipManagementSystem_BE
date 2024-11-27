@@ -32,3 +32,7 @@ mail:
         connectiontimeout: 5000
         timeout: 5000
         writetimeout: 5000
+
+firebase:
+  path: ${GOOGLE_APPLICATION_CREDENTIALS}
+  api_key: ${WEB_API_KEY}

@@ -3,12 +3,17 @@ package com.ims.internship_management_system.service.security;
 import com.ims.internship_management_system.configs.security.UserPrincipal;
 import com.ims.internship_management_system.constant.LetterAndNumber;
 import com.ims.internship_management_system.exception.IMSRuntimeException;
+import com.ims.internship_management_system.model.MentorEntity;
 import com.ims.internship_management_system.model.dto.JwtResponse;
 import com.ims.internship_management_system.model.dto.LoginRequest;
 import com.ims.internship_management_system.repository.InternRepository;
+import com.ims.internship_management_system.repository.MentorRepository;
 import com.ims.internship_management_system.repository.UserRepository;
+import com.ims.internship_management_system.service.MentorService;
+import com.ims.internship_management_system.service.firebase.FirebaseService;
 import com.ims.internship_management_system.util.generator.IdGenerator;
 import lombok.RequiredArgsConstructor;
+//import lombok.var;
 //import lombok.var;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,12 +27,15 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final InternRepository internRepository;
     private final UserRepository userRepository;
+    private final MentorService mentorService;
+    private final MentorRepository mentorRepository;
     private final JwtService jwtService;
     private static final SecureRandom random = new SecureRandom();
     public static final String PASSWORD_BASE = LetterAndNumber.LOWERCASE_LETTER.getValue()
             + LetterAndNumber.UPPERCASE_LETTER.getValue()
             + LetterAndNumber.NUMBER.getValue()
             + LetterAndNumber.SPECIAL_CHAR.getValue();
+    public final FirebaseService firebaseService;
 
 
     public String generatePassword(int length) {
@@ -63,14 +71,25 @@ public class AuthService {
 
     public JwtResponse login(LoginRequest loginRequest) {
         var i = userRepository.getUserEntityByAccount(
-                loginRequest.getUsername()).orElseThrow(()
+                loginRequest.getEmail()).orElseThrow(()
                 -> new IMSRuntimeException(HttpStatus.NOT_FOUND,"User not found"));
             if(!passwordEncoder.matches(loginRequest.getPassword(), i.getPassword())){
                 throw new IMSRuntimeException(HttpStatus.BAD_REQUEST,"Wrong password");
             }
         String token =
-                jwtService.generateTokenFromUserIdAndUsernameAndRole(IdGenerator.getIdFromAccount(loginRequest.getUsername()),
-                loginRequest.getUsername(), i.getRole());
+                jwtService.generateTokenFromUserIdAndUsernameAndRole(IdGenerator.getIdFromAccount(loginRequest.getEmail()),
+                loginRequest.getEmail(), i.getRole());
         return new JwtResponse(token);
     }
+
+    public String registerWithEmailAndPassword(MentorEntity mentor) {
+        LoginRequest loginRequest = new LoginRequest(mentor.getAccount(), mentor.getPassword());
+        firebaseService.signUp(loginRequest);
+        mentorService.createMentor(mentor);
+        MentorEntity m = mentorRepository.findByAccount(mentor.getAccount()).orElseThrow(() -> new IMSRuntimeException(HttpStatus.NOT_FOUND,"Mentor not found"));
+        m.setPassword(null);
+        mentorRepository.save(m);
+        return "register success.";
+    }
+
 }

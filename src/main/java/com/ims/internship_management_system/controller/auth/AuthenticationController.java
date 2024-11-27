@@ -36,6 +36,7 @@ public class AuthenticationController {
     private final AuthService authService;
     private final MentorService mentorService;
     private final PasswordEncoder passwordEncoder;
+//    private final Firebas
 
     @PostMapping(path = "/intern/register")
     public InternEntity internRegister(@RequestBody InternCreationRequest request) {
@@ -84,6 +85,12 @@ public class AuthenticationController {
         String s = authService.changePassword(principal, oldPassword, newPassword);
         return ResponseEntity.ok(s);
 //        return ResponseEntity.ok().build(s);
+    }
+
+    @PostMapping(path="mentor/register/email-and-password")
+    public ResponseEntity<?> registerMentorEmail(@RequestBody MentorEntity register) {
+        var m = authService.registerWithEmailAndPassword(register);
+        return ResponseEntity.ok().body(m);
     }
 
 

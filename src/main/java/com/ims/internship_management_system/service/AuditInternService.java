@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,23 +42,40 @@ public class AuditInternService {
     }
 
     public List<AuditInternDto> getAllAuditInterns() {
-        return auditInternRepository.findAll().stream().map(auditInternMapper::toDTO).toList();
+        List<AuditInternEntity> auditInternEntities = auditInternRepository.findAll();
+        return getListDtoFromListEntity(auditInternEntities);
+    }
+
+    public List<AuditInternDto> getListDtoFromListEntity(List<AuditInternEntity> auditInternEntities) {
+        List<AuditInternDto> auditInternDtos = new ArrayList<>();
+        for (AuditInternEntity auditInternEntity : auditInternEntities) {
+            List<GradeEntity> grades = gradeRepository.findGradeEntitiesByAuditInternId(auditInternEntity.getAuditInternId());
+            auditInternDtos.add(auditInternMapper.toDTO(auditInternEntity, grades));
+        }
+        return auditInternDtos;
     }
 
     public List<AuditInternDto> getAllAuditInternsByInternId(String internId) {
-        return auditInternRepository.findAuditInternByInternIdOrderByCreatedTimeDesc(internId).stream().map(auditInternMapper::toDTO).toList();
+        return getListDtoFromListEntity(auditInternRepository.findAuditInternByInternIdOrderByCreatedTimeDesc(internId));
     }
 
     public List<AuditInternDto> getAllAuditInternsByResultId(String resultId) {
-        return auditInternRepository.findAuditInternByResultIdOrderByCreatedTimeDesc(resultId).stream().map(auditInternMapper::toDTO).toList();
+        return getListDtoFromListEntity(auditInternRepository.findAuditInternByResultIdOrderByCreatedTimeDesc(resultId));
     }
 
     public List<AuditInternEntity> getByMentorId(String mentorId) {
         return auditInternRepository.findAuditInternByMentorId(mentorId);
     }
 
-    public Optional<AuditInternDto> getAuditInternsByAuditInternId(String id) {
-        return auditInternRepository.findAuditInternEntityByAuditInternId(id).map(auditInternMapper::toDTO);
+    public AuditInternDto getAuditInternsByAuditInternId(String id) {
+        List<GradeEntity> grades = gradeRepository.findGradeEntitiesByAuditInternId(id);
+        return auditInternMapper
+                .toDTO(
+                        auditInternRepository
+                                .findAuditInternEntityByAuditInternId(id)
+                                .orElseThrow(() -> new IMSRuntimeException(HttpStatus.NOT_FOUND,
+                                 "audit intern form not found"
+                                )),grades);
     }
 
     public List<AuditInternEntity> getAuditInternsByAuditId(String id) {
@@ -71,14 +89,15 @@ public class AuditInternService {
             AuditInternEntity auditInternEntity = optionalEntity.get();
             double sum=0;
             for(GradeDto grade: columns){
-                    new GradeEntity(auditInternEntity.getAuditInternId(),
-                            grade.getName(), grade.getValue(), grade.getDescription());
-
+                    gradeRepository.save(new GradeEntity(auditInternEntity.getAuditInternId(),
+                            grade.getName(), grade.getValue(), grade.getDescription()));
                     sum += grade.getValue();
                 }
 
             auditInternEntity.setAveGrade(sum/3);
-            return auditInternMapper.toDTO(auditInternRepository.save(auditInternEntity));
+            AuditInternEntity entity = auditInternRepository.save(auditInternEntity);
+            return auditInternMapper.toDTO(entity,
+                    gradeRepository.findGradeEntitiesByAuditInternId(entity.getAuditInternId()));
         }else{
             throw new EntityNotFoundException("Audit Intern Form with id " + id + " not found");
         }
@@ -86,7 +105,8 @@ public class AuditInternService {
 
     public AuditInternDto updateGrade(String id, List<GradeDto> columns) {
         AuditInternEntity auditIntern =
-                auditInternRepository.findAuditInternEntityByAuditInternId(id).get();
+                auditInternRepository.findAuditInternEntityByAuditInternId(id)
+                        .orElseThrow(() -> new IMSRuntimeException(HttpStatus.NOT_FOUND, "audit intern form not found"));
         List<GradeEntity> grades = gradeRepository.findGradeEntitiesByAuditInternId(id);
         double sum=0;
         for(GradeEntity grade: grades){
@@ -100,7 +120,9 @@ public class AuditInternService {
             }
         }
             auditIntern.setAveGrade(sum/3);
-          return auditInternMapper.toDTO(auditInternRepository.save(auditIntern));
+        AuditInternEntity auditInternEntity = auditInternRepository.save(auditIntern);
+          return auditInternMapper.toDTO(auditInternEntity,
+                  gradeRepository.findGradeEntitiesByAuditInternId(auditInternEntity.getAuditInternId()));
 
     }
 

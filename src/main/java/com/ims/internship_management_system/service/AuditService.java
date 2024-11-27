@@ -3,10 +3,7 @@ package com.ims.internship_management_system.service;
 import com.ims.internship_management_system.constant.EvaluationPeriod;
 import com.ims.internship_management_system.constant.Role;
 import com.ims.internship_management_system.exception.IMSRuntimeException;
-import com.ims.internship_management_system.model.AuditEntity;
-import com.ims.internship_management_system.model.AuditInternEntity;
-import com.ims.internship_management_system.model.AuditParticipants;
-import com.ims.internship_management_system.model.InternEntity;
+import com.ims.internship_management_system.model.*;
 import com.ims.internship_management_system.model.dto.AuditDto;
 import com.ims.internship_management_system.model.dto.AuditInternDto;
 import com.ims.internship_management_system.model.dto.InternDto;
@@ -14,6 +11,7 @@ import com.ims.internship_management_system.model.mapper.AuditInternMapper;
 import com.ims.internship_management_system.model.mapper.AuditMapper;
 import com.ims.internship_management_system.model.mapper.InternMapper;
 import com.ims.internship_management_system.repository.AuditRepository;
+import com.ims.internship_management_system.repository.GradeRepository;
 import com.ims.internship_management_system.repository.InternRepository;
 import com.ims.internship_management_system.request.AuditFormCreationRequest;
 import com.ims.internship_management_system.util.generator.IdGenerator;
@@ -35,6 +33,7 @@ public class AuditService {
     private final AuditInternService auditInternService;
     private final MentorService mentorService;
     private final AuditMapper auditMapper;
+    private final GradeRepository gradeRepository;
     private final AuditParticipantsService auditParticipantsService;
     private final InternRepository internRepository;
     private final InternMapper internMapper;
@@ -84,7 +83,13 @@ public class AuditService {
 
     public List<AuditInternDto> getAuditInterns(AuditEntity audit){
         List<AuditInternEntity> auditInternEntities = auditInternService.getAuditInternsByAuditId(audit.getAuditId());
-        return auditInternEntities.stream().map(auditInternMapper::toDTO).toList();
+        List<AuditInternDto> auditInternDtos = new ArrayList<>();
+        for(AuditInternEntity auditInternEntity : auditInternEntities){
+            List<GradeEntity> grade =
+                    gradeRepository.findGradeEntitiesByAuditInternId(auditInternEntity.getAuditInternId());
+        auditInternDtos.add(auditInternMapper.toDTO(auditInternEntity, grade));
+        }
+        return auditInternDtos;
     }
 
 

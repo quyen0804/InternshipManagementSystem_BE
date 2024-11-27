@@ -19,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuditDto {
-//    private int auditId;
+    private String auditId;
     @CreatedDate
     private LocalDateTime date;
 

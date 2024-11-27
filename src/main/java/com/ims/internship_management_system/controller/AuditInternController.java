@@ -35,8 +35,7 @@ public class AuditInternController {
 
     @GetMapping(path = "/get-by-mentor-id/{mentor}")
     public ResponseEntity<?> getByMentorId(@PathVariable String mentor) {
-        List<AuditInternDto> list =
-                auditInternService.getByMentorId(mentor).stream().map(auditInternMapper::toDTO).toList();
+        List<AuditInternDto> list = auditInternService.getListDtoFromListEntity(auditInternService.getByMentorId(mentor));
         return ResponseEntity.ok().body(list);
     }
 
@@ -54,10 +53,8 @@ public class AuditInternController {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<AuditInternDto> getAuditInternById(@PathVariable String id) {
-        Optional<AuditInternDto> dto = auditInternService.getAuditInternsByAuditInternId(id);
-        return new ResponseEntity<>(
-                dto.orElseThrow(() -> new IMSRuntimeException(HttpStatus.NOT_FOUND,
-                        "Internal error. Try again.")), HttpStatus.OK);
+        AuditInternDto dto = auditInternService.getAuditInternsByAuditInternId(id);
+        return ResponseEntity.ok().body(dto);
     }
 
     @PutMapping(path="{id}/evaluation")

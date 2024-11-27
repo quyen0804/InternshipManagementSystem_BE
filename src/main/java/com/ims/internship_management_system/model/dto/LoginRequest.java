@@ -1,11 +1,12 @@
 package com.ims.internship_management_system.model.dto;
 
-import com.ims.internship_management_system.constant.Role;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class LoginRequest {
-    String username;
+    String email;
     String password;
 //    Role role;
 }

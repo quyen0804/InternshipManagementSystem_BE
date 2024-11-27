@@ -1,5 +1,6 @@
 package com.ims.internship_management_system.model.dto;
 
+import com.ims.internship_management_system.model.GradeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuditInternDto {
+    private String auditInternId;
     private String internId;
     private String mentorId;
 
@@ -28,5 +30,5 @@ public class AuditInternDto {
     private double aveGrade;
 
 
-//    private List<GradeDto> grades;
+    private List<GradeEntity> grades;
 }
