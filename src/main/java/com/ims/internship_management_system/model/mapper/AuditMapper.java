@@ -13,7 +13,4 @@ public interface AuditMapper {
     AuditDto toDTO(AuditEntity auditEntity, List<InternDto> interns,
                    List<AuditInternDto> auditInterns);
     AuditEntity toEntity(AuditDto auditDto);
-//
-//    @Mapping(target = "")
-//    AuditEntity formToEntity(AuditFormCreationRequest auditDto);
 }
