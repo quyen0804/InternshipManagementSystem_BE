@@ -1,8 +1,6 @@
 package com.ims.internship_management_system.controller;
 
 
-import com.ims.internship_management_system.exception.IMSRuntimeException;
-import com.ims.internship_management_system.model.AuditInternEntity;
 import com.ims.internship_management_system.model.dto.AuditInternDto;
 import com.ims.internship_management_system.model.dto.GradeDto;
 import com.ims.internship_management_system.model.mapper.AuditInternMapper;
@@ -10,11 +8,9 @@ import com.ims.internship_management_system.service.AuditInternService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.method.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -53,7 +49,7 @@ public class AuditInternController {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<AuditInternDto> getAuditInternById(@PathVariable String id) {
-        AuditInternDto dto = auditInternService.getAuditInternsByAuditInternId(id);
+        AuditInternDto dto = auditInternService.getAuditInternsDtoByAuditInternId(id);
         return ResponseEntity.ok().body(dto);
     }
 

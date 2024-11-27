@@ -31,7 +31,11 @@ public class AuditController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> getAuditByAuditId(@PathVariable String id) {
         Optional<AuditEntity> audit = auditService.getAuditById(id);
-        return ResponseEntity.ok().body(audit);
+        AuditDto dto =
+                auditService.getAuditDtoFromEntity(
+                        audit.orElseThrow(() -> new IMSRuntimeException(
+                                HttpStatus.NOT_FOUND, "audit form not found.")));
+        return ResponseEntity.ok().body(dto);
     }
 
     @GetMapping(path = "/get-by-month")

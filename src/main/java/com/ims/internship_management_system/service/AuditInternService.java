@@ -28,6 +28,10 @@ public class AuditInternService {
 
 
     public AuditInternEntity createAuditIntern(String auditId, String internId, String mentorId) {
+        if(auditInternRepository.findById(IdGenerator.generateAuditInternId(internId)).isPresent()) {
+            throw new IMSRuntimeException(HttpStatus.BAD_REQUEST, "The audit intern form for " +
+                    "intern with intern id "+internId+" already existed.");
+        }
         AuditInternEntity auditInternEntity = new AuditInternEntity();
         auditInternEntity.setAuditId(auditId);
         auditInternEntity.setResultId(IdGenerator.generateAuditResultId(internId));
@@ -67,7 +71,7 @@ public class AuditInternService {
         return auditInternRepository.findAuditInternByMentorId(mentorId);
     }
 
-    public AuditInternDto getAuditInternsByAuditInternId(String id) {
+    public AuditInternDto getAuditInternsDtoByAuditInternId(String id) {
         List<GradeEntity> grades = gradeRepository.findGradeEntitiesByAuditInternId(id);
         return auditInternMapper
                 .toDTO(

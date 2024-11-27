@@ -110,7 +110,22 @@ public class AuditService {
     }
 
     public Optional<AuditEntity> getAuditById(String id) {
-        return auditRepository.findByAuditId(id);
+        return auditRepository.findById(id);
+    }
+
+    public AuditDto getAuditDtoFromEntity(AuditEntity auditEntity) {
+        List<AuditInternEntity> auditInternEntities =
+                auditInternService.getAuditInternsByAuditId(auditEntity.getAuditId());
+        List<AuditInternDto> auditInternDtos = auditInternService.getListDtoFromListEntity(auditInternEntities);
+        List<AuditParticipants> participants = auditParticipantsService
+                .findInternParticipantsByAuditId(auditEntity.getAuditId());
+        List<InternDto> interns= new ArrayList<>();
+        for(AuditParticipants auditParticipants : participants){
+            interns.add(internMapper.toDTO(internService.getInternByInternId(auditParticipants.getUserId())
+                    .orElseThrow(() -> new IMSRuntimeException(HttpStatus.NOT_FOUND,
+                            "id" +auditParticipants.getUserId() + "not found"))));
+        }
+        return auditMapper.toDTO(auditEntity, interns, auditInternDtos);
     }
 
 

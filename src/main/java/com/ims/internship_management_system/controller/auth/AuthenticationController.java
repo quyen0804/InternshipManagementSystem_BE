@@ -68,6 +68,15 @@ public class AuthenticationController {
         return ResponseEntity.ok(jwtResponse);
     }
 
+    @PostMapping(path = "/login-with-email")
+    public ResponseEntity<?> loginWithEmailAndPassword(@RequestBody LoginRequest request,
+                                   HttpServletResponse response) {
+        JwtResponse jwtResponse = authService.loginWithEmailAndPassword(request);
+        Cookie cookie = new Cookie(Auth.JWT_COOKIE.getValue(), jwtResponse.getToken());
+        response.addCookie(cookie);
+        return ResponseEntity.ok(jwtResponse);
+    }
+
     @GetMapping(path="get/my-profile")
     public ResponseEntity<?> getMyProfile() {
         var user = JWTSecurityUtil.getJWTUserInfo();

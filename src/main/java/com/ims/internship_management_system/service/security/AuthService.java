@@ -4,6 +4,7 @@ import com.ims.internship_management_system.configs.security.UserPrincipal;
 import com.ims.internship_management_system.constant.LetterAndNumber;
 import com.ims.internship_management_system.exception.IMSRuntimeException;
 import com.ims.internship_management_system.model.MentorEntity;
+import com.ims.internship_management_system.model.UserEntity;
 import com.ims.internship_management_system.model.dto.JwtResponse;
 import com.ims.internship_management_system.model.dto.LoginRequest;
 import com.ims.internship_management_system.repository.InternRepository;
@@ -79,6 +80,17 @@ public class AuthService {
         String token =
                 jwtService.generateTokenFromUserIdAndUsernameAndRole(IdGenerator.getIdFromAccount(loginRequest.getEmail()),
                 loginRequest.getEmail(), i.getRole());
+        return new JwtResponse(token);
+    }
+
+    public JwtResponse loginWithEmailAndPassword(LoginRequest loginRequest) {
+        var i =firebaseService.signIn(loginRequest);
+        UserEntity user =
+                userRepository.getUserEntityByAccount(loginRequest.getEmail())
+                        .orElseThrow(() -> new IMSRuntimeException(HttpStatus.NOT_FOUND, "User not found."));
+        String token =
+                jwtService.generateTokenFromUserIdAndUsernameAndRole(user.getUserId(),
+                        user.getAccount(),user.getRole());
         return new JwtResponse(token);
     }
 
