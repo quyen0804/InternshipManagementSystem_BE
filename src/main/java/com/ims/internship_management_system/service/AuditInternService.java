@@ -93,7 +93,6 @@ public class AuditInternService {
                             grade.getName(), grade.getValue(), grade.getDescription()));
                     sum += grade.getValue();
                 }
-
             auditInternEntity.setAveGrade(sum/3);
             AuditInternEntity entity = auditInternRepository.save(auditInternEntity);
             return auditInternMapper.toDTO(entity,
