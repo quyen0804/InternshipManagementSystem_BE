@@ -7,6 +7,7 @@ import com.ims.internship_management_system.model.dto.AuditInternDto;
 import com.ims.internship_management_system.model.dto.GradeDto;
 import com.ims.internship_management_system.model.mapper.AuditInternMapper;
 import com.ims.internship_management_system.repository.AuditInternRepository;
+import com.ims.internship_management_system.repository.AuditParticipantsRepository;
 import com.ims.internship_management_system.repository.GradeRepository;
 import com.ims.internship_management_system.util.generator.IdGenerator;
 import jakarta.persistence.EntityNotFoundException;
@@ -24,6 +25,7 @@ public class AuditInternService {
     private final AuditInternRepository auditInternRepository;
     private final AuditInternMapper auditInternMapper;
     private final GradeRepository gradeRepository;
+    private final AuditParticipantsRepository auditParticipantsRepository;
 //    private final AuditService auditService;
 
 
@@ -133,6 +135,11 @@ public class AuditInternService {
         Optional<AuditInternEntity> optionalEntity = auditInternRepository.findAuditInternEntityByAuditInternId(id);
         if (optionalEntity.isPresent()) {
             AuditInternEntity auditInternEntity = optionalEntity.get();
+            auditParticipantsRepository.delete(
+                    auditParticipantsRepository.findByAuditIdAndUserId(auditInternEntity.getAuditId(),
+                            auditInternEntity.getInternId())
+                            .orElseThrow(() -> new IMSRuntimeException(HttpStatus.NOT_FOUND,
+                                    "audit participant with id " + auditInternEntity.getInternId() + " not found")));
             auditInternRepository.delete(auditInternEntity);
         }else{
             throw new IMSRuntimeException(HttpStatus.NOT_FOUND,
